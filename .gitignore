@@ -7,3 +7,5 @@
 *.sln
 *.icloud
 *.iml
+
+.gradle
