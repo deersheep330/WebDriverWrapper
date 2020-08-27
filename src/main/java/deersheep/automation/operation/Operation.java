@@ -21,7 +21,7 @@ public class Operation {
     protected long defaultTargetElementWaitTimeoutInSec = 8;
     protected long defaultWaitForElementWaitTimeoutInSec = 8;
 
-    protected long pollingIntervalInSec = 1;
+    protected long pollingIntervalInMillis = 500;
 
     protected long clickMaxRetry = 3;
     protected long findMaxRetry = 10;
@@ -113,7 +113,7 @@ public class Operation {
                 throw new RuntimeException("Target Element " + target.getName() + " not Found! " + Message);
             }
         }.withTimeout(Duration.ofSeconds(targetElementWaitTimeoutInSec))
-                .pollingEvery(Duration.ofSeconds(pollingIntervalInSec))
+                .pollingEvery(Duration.ofMillis(pollingIntervalInMillis))
                 .ignoring(Exception.class);
 
         /*
@@ -149,7 +149,7 @@ public class Operation {
                     throw new RuntimeException("Click " + target.getName() + " and Wait for " + waitFor.getName() + " Fail! " + Message);
                 }
             }.withTimeout(Duration.ofSeconds(waitForElementWaitTimeoutInSec))
-                    .pollingEvery(Duration.ofSeconds(pollingIntervalInSec))
+                    .pollingEvery(Duration.ofMillis(pollingIntervalInMillis))
                     .ignoring(Exception.class);
 
             boolean success = false;
@@ -202,7 +202,7 @@ public class Operation {
                 throw new RuntimeException("Try to find " + target.getName() + " but not found ! " + Message);
             }
         }.withTimeout(Duration.ofSeconds(targetElementWaitTimeoutInSec))
-         .pollingEvery(Duration.ofSeconds(pollingIntervalInSec))
+         .pollingEvery(Duration.ofMillis(pollingIntervalInMillis))
          .ignoring(Exception.class);
 
         try {
@@ -238,7 +238,7 @@ public class Operation {
                 throw new RuntimeException("Element " + waitFor.getName() + " not found after timeout " + waitForElementWaitTimeoutInSec + " s. " + Message);
             }
         }.withTimeout(Duration.ofSeconds(waitForElementWaitTimeoutInSec))
-         .pollingEvery(Duration.ofSeconds(pollingIntervalInSec))
+         .pollingEvery(Duration.ofMillis(pollingIntervalInMillis))
          .ignoring(Exception.class);
 
         waitForElementWait.until(
@@ -258,48 +258,47 @@ public class Operation {
         }
     }
 
-    public WebElement findElement(Element target) {
-        return findElement(target, 200);
+    public WebElement getElement(Element target) {
+        boolean found = tryToFind(target);
+        if (!found) throw new RuntimeException("Element " + target.getName() + " not Found!");
+
+        List<WebElement> list = driver.findElements(By.xpath(target.getXpath()));
+        if (list.size() == 1) return list.get(0);
+        else throw new RuntimeException("More than one element found! Use Operation.getElements() instead.");
     }
 
-    public List<WebElement> findElements(Element target) {
-        return findElements(target, 200);
-    }
+    public List<WebElement> getElements(Element target) {
+        boolean found = tryToFind(target);
+        if (!found) throw new RuntimeException("Element " + target.getName() + " not Found!");
 
-    public WebElement findElement(Element target, int frequencyInMillis) {
-        long retry = 0;
-        while((retry++ < findMaxRetry) && !isExist(target)) {
-            sleep(frequencyInMillis);
-        }
-        if (!isExist(target)) throw new RuntimeException("Element " + target.getName() + " not Found!");
-        else return driver.findElement(By.xpath(target.getXpath()));
-    }
-
-    public List<WebElement> findElements(Element target, int frequencyInMillis) {
-        long retry = 0;
-        while((retry++ < findMaxRetry) && !isExist(target)) {
-            sleep(frequencyInMillis);
-        }
-        if (!isExist(target)) throw new RuntimeException("Element " + target.getName() + " not Found!");
-        else return driver.findElements(By.xpath(target.getXpath()));
+        List<WebElement> list = driver.findElements(By.xpath(target.getXpath()));
+        return list;
     }
 
     public void sendText(Element target, String text) {
 
         if (!isIE()) {
             click(target);
-            WebElement element = findElement(target);
+            WebElement element = getElement(target);
             element.clear();
             element.sendKeys(text);
         }
         else {
             click(target);
-            WebElement element = findElement(target);
+            WebElement element = getElement(target);
             element.sendKeys("dummy");
             sleep(1000);
             js.executeScript("arguments[0].innerHTML=arguments[1]", element, text);
             sleep(1000);
         }
+    }
+
+    public void scrollWindowTo(int xOffset, int yOffset) {
+        js.executeScript("window.scrollTo(arguments[0],arguments[1]);", xOffset, yOffset);
+    }
+
+    public void scrollToElement(Element target) {
+        js.executeScript("arguments[0].scrollIntoView();", getElement(target));
     }
 
     protected void sleep(long millis) {

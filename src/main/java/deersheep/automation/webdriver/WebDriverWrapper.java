@@ -67,7 +67,7 @@ public class WebDriverWrapper {
                 throw new RuntimeException("Unsupported Browser Type: " + browser);
         }
 
-        String url = Machine.Local.getUrl();
+        String url;
         switch (machine) {
             case Remote:
                 url = Machine.Remote.getUrl();
