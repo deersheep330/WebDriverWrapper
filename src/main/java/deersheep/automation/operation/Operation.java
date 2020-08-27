@@ -5,10 +5,12 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 public class Operation {
 
@@ -18,13 +20,14 @@ public class Operation {
     protected JavascriptExecutor js;
     protected Capabilities capabilities;
 
+    protected String defaultTabHandle;
+
     protected long defaultTargetElementWaitTimeoutInSec = 8;
     protected long defaultWaitForElementWaitTimeoutInSec = 8;
 
     protected long pollingIntervalInMillis = 500;
 
     protected long clickMaxRetry = 3;
-    protected long findMaxRetry = 10;
 
     public Operation(WebDriver driver) {
         this.driver = driver;
@@ -291,6 +294,68 @@ public class Operation {
             js.executeScript("arguments[0].innerHTML=arguments[1]", element, text);
             sleep(1000);
         }
+    }
+
+    public void selectDropdownMenuOptionByValue(Element dropdown, String valueToBeSelected) {
+        Select select = new Select(getElement(dropdown));
+        select.selectByValue(valueToBeSelected);
+    }
+
+    public void navigateTo(String url) {
+        driver.get(url);
+        defaultTabHandle = driver.getWindowHandle();
+    }
+
+    public void reloadPage() {
+        driver.navigate().refresh();
+        defaultTabHandle = driver.getWindowHandle();
+    }
+
+    public boolean IsNewTabBeingOpened() {
+        if (driver.getWindowHandles().size() > 1) return true;
+        else return false;
+    }
+
+    public int getCurrentOpenedTabsCount() {
+        return driver.getWindowHandles().size();
+    }
+
+    public Set<String> getCurrentOpenedTabsSet() {
+        return driver.getWindowHandles();
+    }
+
+    public void switchToFirstNewlyOpenedTab() {
+        for (String handle : driver.getWindowHandles()) {
+            if (!handle.equals(defaultTabHandle)) {
+                System.out.println("Switch from " + defaultTabHandle + " to " + handle);
+                driver.switchTo().window(handle);
+                break;
+            }
+        }
+    }
+
+    public void switchToTab(String handle) {
+        for (String _handle : driver.getWindowHandles()) {
+            if (_handle.equals(handle)) {
+                System.out.println("Switch to " + handle);
+                driver.switchTo().window(handle);
+                break;
+            }
+        }
+    }
+
+    public void closeNewlyOpenedTabs() {
+
+        if (defaultTabHandle == null) return;
+
+        Set<String> handles = driver.getWindowHandles();
+        for (String handle : handles) {
+            if (!handle.equals(defaultTabHandle)) {
+                driver.switchTo().window(handle);
+                driver.close();
+            }
+        }
+        driver.switchTo().window(defaultTabHandle);
     }
 
     public void scrollWindowTo(int xOffset, int yOffset) {
