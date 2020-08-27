@@ -366,6 +366,10 @@ public class Operation {
         js.executeScript("arguments[0].scrollIntoView();", getElement(target));
     }
 
+    public void quitAndCloseBrowser() {
+        driver.quit();
+    }
+
     protected void sleep(long millis) {
         try {
             Thread.sleep(millis);
