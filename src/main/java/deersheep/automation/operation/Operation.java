@@ -370,7 +370,7 @@ public class Operation {
         driver.quit();
     }
 
-    protected void sleep(long millis) {
+    public void sleep(long millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
