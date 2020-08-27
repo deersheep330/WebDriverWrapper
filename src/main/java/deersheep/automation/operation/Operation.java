@@ -1,0 +1,313 @@
+package deersheep.automation.operation;
+
+import deersheep.automation.element.Element;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+
+import java.time.Duration;
+import java.util.List;
+
+public class Operation {
+
+    protected WebDriver driver;
+
+    protected Actions actions;
+    protected JavascriptExecutor js;
+    protected Capabilities capabilities;
+
+    protected long defaultTargetElementWaitTimeoutInSec = 8;
+    protected long defaultWaitForElementWaitTimeoutInSec = 8;
+
+    protected long pollingIntervalInSec = 1;
+
+    protected long clickMaxRetry = 3;
+    protected long findMaxRetry = 10;
+
+    public Operation(WebDriver driver) {
+        this.driver = driver;
+        this.actions = new Actions(this.driver);
+        this.js = (JavascriptExecutor) this.driver;
+        this.capabilities = ((HasCapabilities) this.driver).getCapabilities();
+    }
+
+    public boolean isIE() {
+        if (this.capabilities.getBrowserName().equals("internet explorer")) return true;
+        else return false;
+    }
+
+    protected void setTargetElementWaitTimeoutInSec(long sec) {
+        this.defaultTargetElementWaitTimeoutInSec = sec;
+    }
+
+    protected void setWaitForElementWaitTimeoutInSec(long sec) {
+        this.defaultWaitForElementWaitTimeoutInSec = sec;
+    }
+
+    protected void simpleClick(WebElement element) {
+        actions.click(element).build().perform();
+    }
+
+    protected void simpleClickWithOffset(WebElement element, int xOffset, int yOffset) {
+        actions.moveToElement(element, xOffset, yOffset).click().build().perform();
+    }
+
+    /*
+    click "target" element and no need to wait for anything
+    */
+    public void click(Element target) {
+        _clickWithOffsetAndWait(target, 0, 0,null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec);
+    }
+
+    /*
+    click "target" element with offset and no need to wait for anything
+    */
+    public void clickWithOffset(Element target, int xOffset, int yOffset) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec);
+    }
+
+    /*
+    click "target" element and wait for "waitFor" element
+    */
+    public void clickAndWait(Element target, Element waitFor) {
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec);
+    }
+
+    /*
+    click "target" element with offset and wait for "waitFor" element
+    */
+    public void clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec);
+    }
+
+    /*
+    click "target" element and wait for "waitFor" element
+    customize timeout
+    */
+    public void clickAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec);
+    }
+
+    /*
+    click "target" element with offset and wait for "waitFor" element
+    customize timeout
+    */
+    public void clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec);
+    }
+
+    protected void _clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) throws RuntimeException {
+
+        /*
+        step 1-1:
+        try to find "target" element
+        polling in 1 second interval
+        if "target" element not found after 8 seconds
+        throw an exception and return
+         */
+        Wait<WebDriver> targetElementWait = new FluentWait<WebDriver>(driver) {
+            @Override
+            protected RuntimeException timeoutException(String Message, Throwable lastException) {
+                throw new RuntimeException("Target Element " + target.getName() + " not Found! " + Message);
+            }
+        }.withTimeout(Duration.ofSeconds(targetElementWaitTimeoutInSec))
+                .pollingEvery(Duration.ofSeconds(pollingIntervalInSec))
+                .ignoring(Exception.class);
+
+        /*
+        step 1-2:
+        when we say we "find" the target element
+        it means "target" element is present on the DOM of the page
+        and the width and height are greater than 0
+         */
+        WebElement targetElement = targetElementWait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath(target.getXpath())));
+
+        /*
+        step 2-1:
+        if no need to wait for the other element
+        just click target and return
+         */
+        if (waitFor == null) {
+            if (xOffset != 0 || yOffset != 0) simpleClickWithOffset(targetElement, xOffset, yOffset);
+            else simpleClick(targetElement);
+        }
+        /*
+        step 2-2:
+        if need to wait for the other element
+        click target and wait for "waitFor" element
+        if "waitFor" element not found after timeout
+        click target again (retry)
+         */
+        else {
+
+            Wait<WebDriver> waitForElementWait = new FluentWait<WebDriver>(driver) {
+                @Override
+                protected RuntimeException timeoutException(String Message, Throwable lastException) {
+                    throw new RuntimeException("Click " + target.getName() + " and Wait for " + waitFor.getName() + " Fail! " + Message);
+                }
+            }.withTimeout(Duration.ofSeconds(waitForElementWaitTimeoutInSec))
+                    .pollingEvery(Duration.ofSeconds(pollingIntervalInSec))
+                    .ignoring(Exception.class);
+
+            boolean success = false;
+            long retry = 0;
+            do {
+                try {
+                    sleep(1000);
+                    if (xOffset != 0 || yOffset != 0) simpleClickWithOffset(targetElement, xOffset, yOffset);
+                    else simpleClick(targetElement);
+
+                    waitForElementWait.until(
+                            ExpectedConditions.visibilityOfElementLocated(By.xpath(waitFor.getXpath())));
+                    success = true;
+                }
+                /*
+                catch the runtime exception we defined above
+                so we can retry (click again) instead of throwing an exception
+                 */ catch (Exception e) {
+                    System.out.println(e + " retry: " + retry);
+                }
+            } while (!success && ++retry < clickMaxRetry);
+
+            if (!success) {
+                throw new RuntimeException("Click " + target.getName() + " and wait for " + waitFor.getName() + " fail after timeout " + clickMaxRetry * waitForElementWaitTimeoutInSec + " s");
+            }
+        }
+    }
+
+    /*
+    test "target" element is exist or not
+    if "target" is exist, return true
+    if "target" isn't exist, return false, no exception would be thrown
+     */
+    public boolean tryToFind(Element target) {
+        return tryToFind(target, defaultTargetElementWaitTimeoutInSec);
+    }
+
+    /*
+    test "target" element is exist or not
+    if "target" is exist, return true
+    if "target" isn't exist, return false, no exception would be thrown
+     */
+    public boolean tryToFind(Element target, long targetElementWaitTimeoutInSec) {
+        /*
+        step 1: wait target
+         */
+        Wait<WebDriver> targetElementWait = new FluentWait<WebDriver>(driver) {
+            @Override
+            protected RuntimeException timeoutException(String Message,Throwable lastException) {
+                throw new RuntimeException("Try to find " + target.getName() + " but not found ! " + Message);
+            }
+        }.withTimeout(Duration.ofSeconds(targetElementWaitTimeoutInSec))
+         .pollingEvery(Duration.ofSeconds(pollingIntervalInSec))
+         .ignoring(Exception.class);
+
+        try {
+            targetElementWait.until(
+                    ExpectedConditions.visibilityOfElementLocated(By.xpath(target.getXpath())));
+        }
+        catch(Exception e) {
+            // do nothing
+        }
+
+        /*
+        step 2: test target
+         */
+        return isExist(target);
+    }
+
+    /*
+    wait for "waitFor" element
+    if not found after timeout, exception would be thrown
+     */
+    public void waitFor(Element waitFor) throws RuntimeException {
+        waitFor(waitFor, defaultWaitForElementWaitTimeoutInSec);
+    }
+
+    /*
+    wait for "waitFor" element
+    if not found after timeout, exception would be thrown
+     */
+    public void waitFor(Element waitFor, long waitForElementWaitTimeoutInSec) throws RuntimeException {
+        Wait<WebDriver> waitForElementWait = new FluentWait<WebDriver>(driver) {
+            @Override
+            protected RuntimeException timeoutException(String Message,Throwable lastException) {
+                throw new RuntimeException("Element " + waitFor.getName() + " not found after timeout " + waitForElementWaitTimeoutInSec + " s. " + Message);
+            }
+        }.withTimeout(Duration.ofSeconds(waitForElementWaitTimeoutInSec))
+         .pollingEvery(Duration.ofSeconds(pollingIntervalInSec))
+         .ignoring(Exception.class);
+
+        waitForElementWait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath(waitFor.getXpath())));
+    }
+
+    /*
+    check "target" element is displayed or not
+     */
+    public boolean isExist(Element target) {
+        if (driver.findElements(By.xpath(target.getXpath())).size() != 0 &&
+                driver.findElement(By.xpath(target.getXpath())).isDisplayed()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public WebElement findElement(Element target) {
+        return findElement(target, 200);
+    }
+
+    public List<WebElement> findElements(Element target) {
+        return findElements(target, 200);
+    }
+
+    public WebElement findElement(Element target, int frequencyInMillis) {
+        long retry = 0;
+        while((retry++ < findMaxRetry) && !isExist(target)) {
+            sleep(frequencyInMillis);
+        }
+        if (!isExist(target)) throw new RuntimeException("Element " + target.getName() + " not Found!");
+        else return driver.findElement(By.xpath(target.getXpath()));
+    }
+
+    public List<WebElement> findElements(Element target, int frequencyInMillis) {
+        long retry = 0;
+        while((retry++ < findMaxRetry) && !isExist(target)) {
+            sleep(frequencyInMillis);
+        }
+        if (!isExist(target)) throw new RuntimeException("Element " + target.getName() + " not Found!");
+        else return driver.findElements(By.xpath(target.getXpath()));
+    }
+
+    public void sendText(Element target, String text) {
+
+        if (!isIE()) {
+            click(target);
+            WebElement element = findElement(target);
+            element.clear();
+            element.sendKeys(text);
+        }
+        else {
+            click(target);
+            WebElement element = findElement(target);
+            element.sendKeys("dummy");
+            sleep(1000);
+            js.executeScript("arguments[0].innerHTML=arguments[1]", element, text);
+            sleep(1000);
+        }
+    }
+
+    protected void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+}

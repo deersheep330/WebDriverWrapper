@@ -15,6 +15,7 @@ dependencies {
     implementation 'net.lightbody.bmp:browsermob-proxy:2.1.5'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
     implementation 'io.github.bonigarcia:webdrivermanager:4.2.0'
+    implementation 'junit:junit:4.12'
 
     testImplementation 'junit:junit:4.13'
 }
