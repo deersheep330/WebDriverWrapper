@@ -4,7 +4,7 @@ plugins {
 
 apply plugin: 'maven'
 
-group 'com.github.deersheep0330'
+group 'com.github.deersheep330'
 version '1.0-SNAPSHOT'
 
 repositories {
