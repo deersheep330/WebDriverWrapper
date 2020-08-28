@@ -376,6 +376,10 @@ public class Operation {
         return defaultTabHandle;
     }
 
+    public void clickAlertOK() {
+        driver.switchTo().alert().accept();
+    }
+
     public void switchToIframe(Element target) {
         if (!target.getXpath().contains("iframe")) throw new RuntimeException("target of switchToIframe should be an iframe");
         driver.switchTo().frame(getElement(target));
