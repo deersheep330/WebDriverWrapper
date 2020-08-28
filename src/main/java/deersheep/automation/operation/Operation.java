@@ -358,6 +358,23 @@ public class Operation {
         driver.switchTo().window(defaultTabHandle);
     }
 
+    public void saveCurrentTabAsDefaultTab() {
+        defaultTabHandle = driver.getWindowHandle();
+    }
+
+    public String getDefaultTabHandle() {
+        return defaultTabHandle;
+    }
+
+    public void switchToIframe(Element target) {
+        if (!target.getXpath().contains("iframe")) throw new RuntimeException("target of switchToIframe should be an iframe");
+        driver.switchTo().frame(getElement(target));
+    }
+
+    public void switchFromIframeToMainHTML() {
+        driver.switchTo().defaultContent();
+    }
+
     public void scrollWindowTo(int xOffset, int yOffset) {
         js.executeScript("window.scrollTo(arguments[0],arguments[1]);", xOffset, yOffset);
     }
