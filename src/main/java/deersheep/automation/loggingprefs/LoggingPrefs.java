@@ -7,6 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 
 public class LoggingPrefs {
@@ -115,6 +118,34 @@ public class LoggingPrefs {
 
     public void saveSpecialHeader(String headerName) {
         storedHeaderNames.add(headerName);
+    }
+
+    public HttpURLConnection resendRequestWithStoredCookieAndHeaders(String url) {
+
+        HttpURLConnection connection = null;
+        Exception ex = null;
+        int retry = 0, maxRetry = 3;
+
+        while (retry++ < maxRetry) {
+            try {
+                connection = (HttpURLConnection) new URL(url).openConnection();
+                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.29 Safari/537.36");
+                if (storedCookie != null) {
+                    connection.setRequestProperty("Cookie", storedCookie);
+                }
+                if (storedHeadersPairs != null && storedHeadersPairs.size() != 0) {
+                    for (Map.Entry<String, String> pair : storedHeadersPairs.entrySet()) {
+                        connection.setRequestProperty(pair.getKey(), pair.getValue());
+                    }
+                }
+            } catch (IOException e) {
+                ex = e;
+                connection = null;
+            }
+        }
+
+        if (connection == null) throw new RuntimeException(ex.getMessage());
+        else return connection;
     }
 
 }
