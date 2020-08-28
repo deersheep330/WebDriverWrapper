@@ -103,4 +103,8 @@ public class EmailPage extends BasePage {
         return emailAddress;
     }
 
+    public void quitAndCloseBrowser() {
+        op.quitAndCloseBrowser();
+    }
+
 }
