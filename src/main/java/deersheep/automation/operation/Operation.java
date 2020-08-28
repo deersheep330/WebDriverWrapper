@@ -1,6 +1,7 @@
 package deersheep.automation.operation;
 
 import deersheep.automation.element.Element;
+import deersheep.automation.loggingprefs.LoggingPrefs;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -29,11 +30,20 @@ public class Operation {
 
     protected long clickMaxRetry = 3;
 
+    protected LoggingPrefs loggingPrefs;
+
     public Operation(WebDriver driver) {
         this.driver = driver;
         this.actions = new Actions(this.driver);
         this.js = (JavascriptExecutor) this.driver;
         this.capabilities = ((HasCapabilities) this.driver).getCapabilities();
+
+        if (this.capabilities.getCapability("goog:loggingPrefs") == null) {
+            this.loggingPrefs = null;
+        }
+        else {
+            this.loggingPrefs = new LoggingPrefs(this.driver);
+        }
     }
 
     public boolean isIE() {
@@ -375,7 +385,7 @@ public class Operation {
         driver.switchTo().defaultContent();
     }
 
-    public void scrollWindowTo(int xOffset, int yOffset) {
+    public void scrollWindowTo(String xOffset, String yOffset) {
         js.executeScript("window.scrollTo(arguments[0],arguments[1]);", xOffset, yOffset);
     }
 
@@ -385,6 +395,27 @@ public class Operation {
 
     public void quitAndCloseBrowser() {
         driver.quit();
+    }
+
+    /*
+    only works in Chrome driver with capabilities set below:
+    LoggingPreferences logPrefs = new LoggingPreferences();
+    logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
+    capabilities.setCapability("goog:loggingPrefs", logPrefs);
+     */
+    public String getRequestUrlFromLoggingPrefs(String... keywords) {
+        if (loggingPrefs == null) throw new RuntimeException("capability goog:loggingPrefs should be enabled");
+        return loggingPrefs.getRequestUrl(keywords);
+    }
+
+    public void enableSaveCookieFromLoggingPrefs(boolean enabled) {
+        if (loggingPrefs == null) throw new RuntimeException("capability goog:loggingPrefs should be enabled");
+        loggingPrefs.enableSaveCookie(enabled);
+    }
+
+    public void saveSpecialHeader(String headerName) {
+        if (loggingPrefs == null) throw new RuntimeException("capability goog:loggingPrefs should be enabled");
+        loggingPrefs.saveSpecialHeader(headerName);
     }
 
     public void sleep(long millis) {
