@@ -86,7 +86,7 @@ public class WebDriverWrapper {
         }
 
         driver.setFileDetector(new LocalFileDetector());
-        driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(45, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         System.out.println("==> Get " + browser + " " + machine + " WebDriver Success!");
 
@@ -118,7 +118,7 @@ public class WebDriverWrapper {
         driver = new ChromeDriver(options);
 
         //driver.setFileDetector(new LocalFileDetector());
-        driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(45, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         System.out.println("==> Get BrowserMob Chrome WebDriver Success!");
 

@@ -94,6 +94,8 @@ public class EmailPage extends BasePage {
         }
 
         op.switchFromIframeToMainHTML();
+
+        op.sleep(4500);
     }
 
     /*
