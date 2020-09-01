@@ -36,16 +36,25 @@ import java.util.concurrent.TimeUnit;
 
 public class WebDriverWrapper {
 
+    private static WebDriverWrapper instance;
+
+    public WebDriverWrapper getInstance() {
+        if (instance == null) {
+            instance = new WebDriverWrapper();
+        }
+        return instance;
+    }
+
     protected Map<String, WebDriverSettingAbility> webDriverSettingsMap = new HashMap<>();
     protected Map<String, String> remoteNodesMap = new HashMap<>();
 
-    protected static int pageLoadTimeoutInSec = 60;
+    protected int pageLoadTimeoutInSec = 60;
 
     public void setPageLoadTimeoutInSec(int sec) {
         pageLoadTimeoutInSec = sec;
     }
 
-    public WebDriverWrapper() {
+    protected WebDriverWrapper() {
 
         ChromeDriverSetting chromeDriverSetting = new ChromeDriverSetting();
         webDriverSettingsMap.put(chromeDriverSetting.getName(), chromeDriverSetting);
@@ -59,8 +68,8 @@ public class WebDriverWrapper {
         webDriverSettingsMap.put(ieDriverSetting.getName(), ieDriverSetting);
         System.out.println("==> add " + ieDriverSetting.getName() + " to default webdriver setting");
 
-        System.out.println("==> plase use addWebDriverSetting() to add other settings if you have your customized webdriver settings");
-        System.out.println("==> plase use addRemoteNode() to add remote node if you'd like to run these webdrivers on remote node");
+        System.out.println("==> please use addWebDriverSetting() to add other settings if you have your customized webdriver settings");
+        System.out.println("==> please use addRemoteNode() to add remote node if you'd like to run these webdrivers on remote node");
     }
 
     public void addWebDriverSetting(WebDriverSettingAbility webDriverSettingAbility) {
