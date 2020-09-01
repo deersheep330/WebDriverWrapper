@@ -22,4 +22,6 @@ public class BasePage {
         elements.put(name, new Element(name, xpath));
     }
 
+    protected Element getElement(String name) { return elements.get(name); }
+
 }
