@@ -38,7 +38,7 @@ public class WebDriverWrapper {
 
     private static WebDriverWrapper instance;
 
-    public WebDriverWrapper getInstance() {
+    public static WebDriverWrapper getInstance() {
         if (instance == null) {
             instance = new WebDriverWrapper();
         }
