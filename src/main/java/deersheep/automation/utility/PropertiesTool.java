@@ -14,6 +14,11 @@ import java.util.Properties;
 public class PropertiesTool {
 
     protected static String postfix = ".properties";
+    protected static Path propertiesFolderPath = Paths.get(System.getProperty("user.dir"), "src", "main", "resources");
+
+    public String getPostfix() {
+        return postfix;
+    }
 
     /*
     default postfix is ".properties"
@@ -29,6 +34,14 @@ public class PropertiesTool {
         System.out.println("==> set properties file postfix to " + postfix);
     }
 
+    public String getPropertiesFolderPath() {
+        return propertiesFolderPath.toString();
+    }
+
+    public void setPropertiesFolderPath(Path path) {
+        propertiesFolderPath = path;
+    }
+
     /*
     filename is relative to src/resources
     e.g. provide filename = default.properties
@@ -39,8 +52,7 @@ public class PropertiesTool {
         Properties props = new Properties();
 
         filename = filename + postfix;
-        Path currentPath = Paths.get(System.getProperty("user.dir"));
-        Path filePath = Paths.get(currentPath.toString(), "src", "resources", filename);
+        Path filePath = Paths.get(propertiesFolderPath.toString(), filename);
 
         FileInputStream in = null;
         FileOutputStream out = null;
@@ -70,8 +82,7 @@ public class PropertiesTool {
         Properties prop = new Properties();
 
         filename = filename + postfix;
-        Path currentPath = Paths.get(System.getProperty("user.dir"));
-        Path filePath = Paths.get(currentPath.toString(), "src", "resources", filename);
+        Path filePath = Paths.get(propertiesFolderPath.toString(), filename);
 
         InputStream in = null;
         try {
@@ -95,8 +106,7 @@ public class PropertiesTool {
         Properties prop = new Properties();
 
         filename = filename + postfix;
-        Path currentPath = Paths.get(System.getProperty("user.dir"));
-        Path filePath = Paths.get(currentPath.toString(), "src", "resources", "config", filename);
+        Path filePath = Paths.get(propertiesFolderPath.toString(), filename);
 
         InputStream in = null;
         try {
