@@ -21,7 +21,11 @@ public class NumberTool {
         return str;
     }
 
-    public static int parseIntFromString(String str) throws ParseException {
-        return numberFormat.parse(findIntFromString(str)).intValue();
+    public static int parseIntFromString(String str) {
+        try {
+            return numberFormat.parse(findIntFromString(str)).intValue();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

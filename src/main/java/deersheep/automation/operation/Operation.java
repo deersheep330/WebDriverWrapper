@@ -271,7 +271,7 @@ public class Operation {
         }
     }
 
-    public WebElement getElement(Element target) {
+    public WebElement findElement(Element target) {
         boolean found = tryToFind(target);
         if (!found) throw new RuntimeException("Element " + target.getName() + " not Found!");
 
