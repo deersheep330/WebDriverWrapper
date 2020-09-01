@@ -1,9 +1,6 @@
 package deersheep.automation.utility;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -56,7 +53,10 @@ public class PropertiesTool {
 
         FileInputStream in = null;
         FileOutputStream out = null;
+        File f = null;
         try {
+            f = new File(filePath.toString());
+            if (!f.exists()) f.createNewFile();
             in = new FileInputStream(filePath.toString());
             props.load(in);
             in.close();
