@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 public class PropertiesTool {
@@ -31,7 +34,7 @@ public class PropertiesTool {
     e.g. provide filename = default.properties
          the file path would be src/resources/default.properties
      */
-    public static void storeProperty(String filename, String key, String value) {
+    public static boolean storeProperty(String filename, String key, String value) {
 
         Properties props = new Properties();
 
@@ -50,8 +53,10 @@ public class PropertiesTool {
             props.setProperty(key, value);
             props.store(out, null);
             out.close();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -100,9 +105,36 @@ public class PropertiesTool {
             in.close();
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
 
         return prop;
+    }
+
+    public static void generateBuildNumber() {
+
+        StringBuilder buildNumber = new StringBuilder("");
+
+        String env = getProperty("environment","env");
+        if (env == null) {
+            System.out.println("environment" + postfix + " file not found! build number would not include env variable.");
+            buildNumber.append(env).append("-");
+        }
+        else if (env.equals("")) {
+            System.out.println("there is no env variable in environment" + postfix + " file! build number would not include env variable.");
+            buildNumber.append(env).append("-");
+        }
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
+        Date date = new Date();
+        buildNumber.append(dateFormat.format(date));
+
+        boolean res = storeProperty("buildNum", "build", buildNumber.toString());
+        if (!res) {
+            System.out.println("Cannot find buildNum" + postfix + " file to store build number!");
+        }
+
+        System.out.println("==> Generate Build Number: " + buildNumber);
     }
 
 }
