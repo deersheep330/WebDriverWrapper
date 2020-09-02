@@ -280,7 +280,7 @@ public class Operation {
         else throw new RuntimeException("More than one element found! Use Operation.getElements() instead.");
     }
 
-    public List<WebElement> getElements(Element target) {
+    public List<WebElement> findElements(Element target) {
         boolean found = tryToFind(target);
         if (!found) throw new RuntimeException("Element " + target.getName() + " not Found!");
 
@@ -292,13 +292,13 @@ public class Operation {
 
         if (!isIE()) {
             click(target);
-            WebElement element = getElement(target);
+            WebElement element = findElement(target);
             element.clear();
             element.sendKeys(text);
         }
         else {
             click(target);
-            WebElement element = getElement(target);
+            WebElement element = findElement(target);
             element.sendKeys("dummy");
             sleep(1000);
             js.executeScript("arguments[0].innerHTML=arguments[1]", element, text);
@@ -307,7 +307,7 @@ public class Operation {
     }
 
     public void selectDropdownMenuOptionByValue(Element dropdown, String valueToBeSelected) {
-        Select select = new Select(getElement(dropdown));
+        Select select = new Select(findElement(dropdown));
         select.selectByValue(valueToBeSelected);
     }
 
@@ -382,7 +382,7 @@ public class Operation {
 
     public void switchToIframe(Element target) {
         if (!target.getXpath().contains("iframe")) throw new RuntimeException("target of switchToIframe should be an iframe");
-        driver.switchTo().frame(getElement(target));
+        driver.switchTo().frame(findElement(target));
     }
 
     public void switchFromIframeToMainHTML() {
@@ -394,7 +394,7 @@ public class Operation {
     }
 
     public void scrollToElement(Element target) {
-        js.executeScript("arguments[0].scrollIntoView();", getElement(target));
+        js.executeScript("arguments[0].scrollIntoView();", findElement(target));
     }
 
     public void quitAndCloseBrowser() {
