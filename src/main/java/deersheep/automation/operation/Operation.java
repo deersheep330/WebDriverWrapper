@@ -2,8 +2,12 @@ package deersheep.automation.operation;
 
 import deersheep.automation.element.Element;
 import deersheep.automation.loggingprefs.LoggingPrefs;
+import deersheep.automation.operation.enums.ClickType;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.Coordinates;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
@@ -67,32 +71,151 @@ public class Operation {
         actions.moveToElement(element, xOffset, yOffset).click().build().perform();
     }
 
+    protected void contextClick(WebElement element) { actions.contextClick(element).build().perform(); }
+
+    protected void contextClickWithOffset(WebElement element, int xOffset, int yOffset) {
+        actions.moveToElement(element, xOffset, yOffset).contextClick().build().perform();
+    }
+
+    protected void clickAndHold(WebElement element) { actions.clickAndHold(element).build().perform(); }
+
+    protected void clickAndHoldWithOffset(WebElement element, int xOffset, int yOffset) {
+        actions.moveToElement(element, xOffset, yOffset).clickAndHold().build().perform();
+    }
+
+    /*
+    click and hold methods group:
+     */
+
+    /*
+    click "target" element and no need to wait for anything
+    */
+    public void clickAndHold(Element target) {
+        _clickWithOffsetAndWait(target, 0, 0,null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CLICK_AND_HOLD);
+    }
+
+    /*
+    click "target" element with offset and no need to wait for anything
+    */
+    public void clickAndHoldWithOffset(Element target, int xOffset, int yOffset) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CLICK_AND_HOLD);
+    }
+
+    /*
+    click "target" element and wait for "waitFor" element
+    */
+    public void clickAndHoldAndWait(Element target, Element waitFor) {
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CLICK_AND_HOLD);
+    }
+
+    /*
+    click "target" element with offset and wait for "waitFor" element
+    */
+    public void clickAndHoldWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CLICK_AND_HOLD);
+    }
+
+    /*
+    click "target" element and wait for "waitFor" element
+    customize timeout
+    */
+    public void clickAndHoldAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK_AND_HOLD);
+    }
+
+    /*
+    click "target" element with offset and wait for "waitFor" element
+    customize timeout
+    */
+    public void clickAndHoldWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK_AND_HOLD);
+    }
+
+    /*
+    release "target" element after "click and hold"
+     */
+    public void release(Element target) {
+        actions.release(findElement(target));
+    }
+
+    /*
+    context click methods group:
+     */
+
+    /*
+    click "target" element and no need to wait for anything
+    */
+    public void contextClick(Element target) {
+        _clickWithOffsetAndWait(target, 0, 0,null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CONTEXT_CLICK);
+    }
+
+    /*
+    click "target" element with offset and no need to wait for anything
+    */
+    public void contextClickWithOffset(Element target, int xOffset, int yOffset) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CONTEXT_CLICK);
+    }
+
+    /*
+    click "target" element and wait for "waitFor" element
+    */
+    public void contextClickAndWait(Element target, Element waitFor) {
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CONTEXT_CLICK);
+    }
+
+    /*
+    click "target" element with offset and wait for "waitFor" element
+    */
+    public void contextClickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CONTEXT_CLICK);
+    }
+
+    /*
+    click "target" element and wait for "waitFor" element
+    customize timeout
+    */
+    public void contextClickAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CONTEXT_CLICK);
+    }
+
+    /*
+    click "target" element with offset and wait for "waitFor" element
+    customize timeout
+    */
+    public void contextClickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CONTEXT_CLICK);
+    }
+
+    /*
+    simple click methods group:
+     */
+
     /*
     click "target" element and no need to wait for anything
     */
     public void click(Element target) {
-        _clickWithOffsetAndWait(target, 0, 0,null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec);
+        _clickWithOffsetAndWait(target, 0, 0,null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CLICK);
     }
 
     /*
     click "target" element with offset and no need to wait for anything
     */
     public void clickWithOffset(Element target, int xOffset, int yOffset) {
-        _clickWithOffsetAndWait(target, xOffset, yOffset, null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec);
+        _clickWithOffsetAndWait(target, xOffset, yOffset, null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CLICK);
     }
 
     /*
     click "target" element and wait for "waitFor" element
     */
     public void clickAndWait(Element target, Element waitFor) {
-        _clickWithOffsetAndWait(target, 0, 0, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec);
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CLICK);
     }
 
     /*
     click "target" element with offset and wait for "waitFor" element
     */
     public void clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) {
-        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec);
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CLICK);
     }
 
     /*
@@ -100,7 +223,7 @@ public class Operation {
     customize timeout
     */
     public void clickAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
-        _clickWithOffsetAndWait(target, 0, 0, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec);
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK);
     }
 
     /*
@@ -108,10 +231,10 @@ public class Operation {
     customize timeout
     */
     public void clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
-        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec);
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK);
     }
 
-    protected void _clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) throws RuntimeException {
+    protected void _clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec, ClickType clickType) throws RuntimeException {
 
         /*
         step 1-1:
@@ -170,8 +293,22 @@ public class Operation {
             do {
                 try {
                     sleep(1000);
-                    if (xOffset != 0 || yOffset != 0) simpleClickWithOffset(targetElement, xOffset, yOffset);
-                    else simpleClick(targetElement);
+                    switch (clickType) {
+                        case CLICK:
+                            if (xOffset != 0 || yOffset != 0) simpleClickWithOffset(targetElement, xOffset, yOffset);
+                            else simpleClick(targetElement);
+                            break;
+                        case CONTEXT_CLICK:
+                            if (xOffset != 0 || yOffset != 0) contextClickWithOffset(targetElement, xOffset, yOffset);
+                            else contextClick(targetElement);
+                            break;
+                        case CLICK_AND_HOLD:
+                            if (xOffset != 0 || yOffset != 0) clickAndHoldWithOffset(targetElement, xOffset, yOffset);
+                            else clickAndHold(targetElement);
+                            break;
+                        default:
+                            throw new RuntimeException("Unsupported Click Type: " + clickType);
+                    }
 
                     waitForElementWait.until(
                             ExpectedConditions.visibilityOfElementLocated(By.xpath(waitFor.getXpath())));
@@ -180,7 +317,8 @@ public class Operation {
                 /*
                 catch the runtime exception we defined above
                 so we can retry (click again) instead of throwing an exception
-                 */ catch (Exception e) {
+                 */
+                catch (Exception e) {
                     System.out.println(e + " retry: " + retry);
                 }
             } while (!success && ++retry < clickMaxRetry);
@@ -395,6 +533,18 @@ public class Operation {
 
     public void scrollToElement(Element target) {
         js.executeScript("arguments[0].scrollIntoView();", findElement(target));
+    }
+
+    public void moveMouseToElement(Element target) {
+        if (driver instanceof RemoteWebDriver) {
+            RemoteWebElement element = (RemoteWebElement) findElement(target);
+            Coordinates c = element.getCoordinates();
+            ((RemoteWebDriver) driver).getMouse().mouseMove(c);
+        }
+        else {
+            actions.moveToElement(findElement(target));
+        }
+        sleep(1500);
     }
 
     public void quitAndCloseBrowser() {
