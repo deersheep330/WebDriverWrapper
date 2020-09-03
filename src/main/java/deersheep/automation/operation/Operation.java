@@ -234,6 +234,7 @@ public class Operation {
     public void keepClickingUntilDisappeared(Element target) {
         do {
             click(target);
+            sleep(1500);
         }
         while (isExist(target));
     }
