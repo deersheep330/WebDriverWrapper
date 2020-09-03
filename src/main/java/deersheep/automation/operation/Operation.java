@@ -90,7 +90,19 @@ public class Operation {
             ((RemoteWebDriver) driver).getMouse().mouseMove(c);
         }
         else {
-            actions.moveToElement(element);
+            actions.moveToElement(element).build().perform();
+        }
+        sleep(1500);
+    }
+
+    protected void moveMouseToElement(WebElement element, int xOffset, int yOffset) {
+        if (driver instanceof RemoteWebDriver) {
+            RemoteWebElement _element = (RemoteWebElement) element;
+            Coordinates c = _element.getCoordinates();
+            ((RemoteWebDriver) driver).getMouse().mouseMove(c, xOffset, yOffset);
+        }
+        else {
+            actions.moveToElement(element, xOffset, yOffset).build().perform();
         }
         sleep(1500);
     }
@@ -162,10 +174,24 @@ public class Operation {
     }
 
     /*
+    hover "target" element with offset and no need to wait for anything
+    */
+    public void hoverWithOffset(Element target, int xOffset, int yOffset) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset,null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.HOVER);
+    }
+
+    /*
     hover "target" element and wait for "waitFor" element
     */
     public void hoverAndWait(Element target, Element waitFor) {
         _clickWithOffsetAndWait(target, 0, 0, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.HOVER);
+    }
+
+    /*
+    hover "target" element with offset and wait for "waitFor" element
+    */
+    public void hoverWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.HOVER);
     }
 
     /*
@@ -174,6 +200,14 @@ public class Operation {
     */
     public void hoverAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
         _clickWithOffsetAndWait(target, 0, 0, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.HOVER);
+    }
+
+    /*
+    hover "target" element with offset and wait for "waitFor" element
+    customize timeout
+    */
+    public void hoverWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.HOVER);
     }
 
     /*
@@ -330,7 +364,8 @@ public class Operation {
                     else clickAndHold(targetElement);
                     break;
                 case HOVER:
-                    moveMouseToElement(targetElement);
+                    if (xOffset != 0 || yOffset != 0) moveMouseToElement(targetElement, xOffset, yOffset);
+                    else moveMouseToElement(targetElement);
                     break;
                 default:
                     throw new RuntimeException("Unsupported Click Type: " + clickType);
@@ -373,7 +408,8 @@ public class Operation {
                             else clickAndHold(targetElement);
                             break;
                         case HOVER:
-                            moveMouseToElement(targetElement);
+                            if (xOffset != 0 || yOffset != 0) moveMouseToElement(targetElement, xOffset, yOffset);
+                            else moveMouseToElement(targetElement);
                             break;
                         default:
                             throw new RuntimeException("Unsupported Click Type: " + clickType);
