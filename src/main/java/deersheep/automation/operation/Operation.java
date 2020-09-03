@@ -229,6 +229,16 @@ public class Operation {
      */
 
     /*
+    keep clicking "target" element until the "target" element disappeared
+    */
+    public void keepClickingUntilDisappeared(Element target) {
+        do {
+            click(target);
+        }
+        while (isExist(target));
+    }
+
+    /*
     click "target" element and no need to wait for anything
     */
     public void click(Element target) {
@@ -305,8 +315,25 @@ public class Operation {
         just click target and return
          */
         if (waitFor == null) {
-            if (xOffset != 0 || yOffset != 0) simpleClickWithOffset(targetElement, xOffset, yOffset);
-            else simpleClick(targetElement);
+            switch (clickType) {
+                case CLICK:
+                    if (xOffset != 0 || yOffset != 0) simpleClickWithOffset(targetElement, xOffset, yOffset);
+                    else simpleClick(targetElement);
+                    break;
+                case CONTEXT_CLICK:
+                    if (xOffset != 0 || yOffset != 0) contextClickWithOffset(targetElement, xOffset, yOffset);
+                    else contextClick(targetElement);
+                    break;
+                case CLICK_AND_HOLD:
+                    if (xOffset != 0 || yOffset != 0) clickAndHoldWithOffset(targetElement, xOffset, yOffset);
+                    else clickAndHold(targetElement);
+                    break;
+                case HOVER:
+                    moveMouseToElement(targetElement);
+                    break;
+                default:
+                    throw new RuntimeException("Unsupported Click Type: " + clickType);
+            }
         }
         /*
         step 2-2:
