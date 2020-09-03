@@ -83,6 +83,18 @@ public class Operation {
         actions.moveToElement(element, xOffset, yOffset).clickAndHold().build().perform();
     }
 
+    protected void moveMouseToElement(WebElement element) {
+        if (driver instanceof RemoteWebDriver) {
+            RemoteWebElement _element = (RemoteWebElement) element;
+            Coordinates c = _element.getCoordinates();
+            ((RemoteWebDriver) driver).getMouse().mouseMove(c);
+        }
+        else {
+            actions.moveToElement(element);
+        }
+        sleep(1500);
+    }
+
     /*
     click and hold methods group:
      */
@@ -136,6 +148,32 @@ public class Operation {
      */
     public void release(Element target) {
         actions.release(findElement(target));
+    }
+
+    /*
+    hover methods group:
+     */
+
+    /*
+    hover "target" element and no need to wait for anything
+    */
+    public void hover(Element target) {
+        _clickWithOffsetAndWait(target, 0, 0,null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.HOVER);
+    }
+
+    /*
+    hover "target" element and wait for "waitFor" element
+    */
+    public void hoverAndWait(Element target, Element waitFor) {
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.HOVER);
+    }
+
+    /*
+    hover "target" element and wait for "waitFor" element
+    customize timeout
+    */
+    public void hoverAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.HOVER);
     }
 
     /*
@@ -305,6 +343,9 @@ public class Operation {
                         case CLICK_AND_HOLD:
                             if (xOffset != 0 || yOffset != 0) clickAndHoldWithOffset(targetElement, xOffset, yOffset);
                             else clickAndHold(targetElement);
+                            break;
+                        case HOVER:
+                            moveMouseToElement(targetElement);
                             break;
                         default:
                             throw new RuntimeException("Unsupported Click Type: " + clickType);
@@ -533,18 +574,6 @@ public class Operation {
 
     public void scrollToElement(Element target) {
         js.executeScript("arguments[0].scrollIntoView();", findElement(target));
-    }
-
-    public void moveMouseToElement(Element target) {
-        if (driver instanceof RemoteWebDriver) {
-            RemoteWebElement element = (RemoteWebElement) findElement(target);
-            Coordinates c = element.getCoordinates();
-            ((RemoteWebDriver) driver).getMouse().mouseMove(c);
-        }
-        else {
-            actions.moveToElement(findElement(target));
-        }
-        sleep(1500);
     }
 
     public void quitAndCloseBrowser() {
