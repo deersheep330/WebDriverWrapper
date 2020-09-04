@@ -104,7 +104,7 @@ public class Operation {
         else {
             actions.moveToElement(element, xOffset, yOffset).build().perform();
         }
-        sleep(1500);
+        sleep(500);
     }
 
     /*
