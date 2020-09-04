@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BasePage {
+public abstract class BasePage {
 
     protected WebDriver driver;
     protected Operation op;

@@ -128,12 +128,14 @@ public class PropertiesTool {
         String env = getProperty("environment","env");
         if (env == null) {
             System.out.println("environment" + postfix + " file not found! build number would not include env variable.");
-            buildNumber.append(env).append("-");
         }
         else if (env.equals("")) {
             System.out.println("there is no env variable in environment" + postfix + " file! build number would not include env variable.");
+        }
+        else {
             buildNumber.append(env).append("-");
         }
+
 
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
         Date date = new Date();
