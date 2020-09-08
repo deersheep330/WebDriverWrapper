@@ -637,7 +637,7 @@ public class Operation {
     }
 
     public void scrollToElement(Element target) {
-        js.executeScript("arguments[0].scrollIntoView();", findElement(target));
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", findElement(target));
     }
 
     public void quitAndCloseBrowser() {
