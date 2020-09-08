@@ -10,25 +10,25 @@ import java.util.Properties;
 
 public class PropertiesTool {
 
-    protected static String postfix = ".properties";
+    protected static String suffix = ".properties";
     protected static Path propertiesFolderPath = Paths.get(System.getProperty("user.dir"), "src", "main", "resources");
 
-    public String getPostfix() {
-        return postfix;
+    public String getSuffix() {
+        return suffix;
     }
 
     /*
-    default postfix is ".properties"
+    default suffix is ".properties"
     e.g. default.properties
      */
-    public static void setPostfix(String _postfix) {
-        if (_postfix.charAt(0) == '.') {
-            postfix = _postfix;
+    public static void setSuffix(String _suffix) {
+        if (_suffix.charAt(0) == '.') {
+            suffix = _suffix;
         }
         else {
-            postfix = "." + _postfix;
+            suffix = "." + _suffix;
         }
-        System.out.println("==> set properties file postfix to " + postfix);
+        System.out.println("==> set properties file suffix to " + suffix);
     }
 
     public String getPropertiesFolderPath() {
@@ -48,7 +48,7 @@ public class PropertiesTool {
 
         Properties props = new Properties();
 
-        filename = filename + postfix;
+        filename = filename + suffix;
         Path filePath = Paths.get(propertiesFolderPath.toString(), filename);
 
         FileInputStream in = null;
@@ -67,7 +67,7 @@ public class PropertiesTool {
             out.close();
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -81,7 +81,7 @@ public class PropertiesTool {
 
         Properties prop = new Properties();
 
-        filename = filename + postfix;
+        filename = filename + suffix;
         Path filePath = Paths.get(propertiesFolderPath.toString(), filename);
 
         InputStream in = null;
@@ -90,7 +90,7 @@ public class PropertiesTool {
             prop.load(in);
             in.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return prop.getProperty(key);
@@ -105,7 +105,7 @@ public class PropertiesTool {
 
         Properties prop = new Properties();
 
-        filename = filename + postfix;
+        filename = filename + suffix;
         Path filePath = Paths.get(propertiesFolderPath.toString(), filename);
 
         InputStream in = null;
@@ -114,7 +114,7 @@ public class PropertiesTool {
             prop.load(in);
             in.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
 
@@ -127,10 +127,10 @@ public class PropertiesTool {
 
         String env = getProperty("environment","env");
         if (env == null) {
-            System.out.println("environment" + postfix + " file not found! build number would not include env variable.");
+            System.out.println("environment" + suffix + " file not found! build number would not include env variable.");
         }
         else if (env.equals("")) {
-            System.out.println("there is no env variable in environment" + postfix + " file! build number would not include env variable.");
+            System.out.println("there is no env variable in environment" + suffix + " file! build number would not include env variable.");
         }
         else {
             buildNumber.append(env).append("-");
@@ -143,7 +143,7 @@ public class PropertiesTool {
 
         boolean res = storeProperty("buildNum", "build", buildNumber.toString());
         if (!res) {
-            System.out.println("Cannot find buildNum" + postfix + " file to store build number!");
+            System.out.println("Cannot find buildNum" + suffix + " file to store build number!");
         }
 
         System.out.println("==> Generate Build Number: " + buildNumber);

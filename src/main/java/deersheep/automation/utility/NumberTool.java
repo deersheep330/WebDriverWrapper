@@ -25,7 +25,7 @@ public class NumberTool {
         try {
             return numberFormat.parse(findIntFromString(str)).intValue();
         } catch (ParseException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return null;
     }
