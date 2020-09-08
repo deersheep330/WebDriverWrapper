@@ -45,7 +45,7 @@ dependencies {
 
 WebDriverWrapper is a singleton.
 
-```
+```java
 WebDriverWrapper wrapper = WebDriverWrapper.getInstance();
 ```
 
@@ -53,7 +53,7 @@ WebDriverWrapper wrapper = WebDriverWrapper.getInstance();
 
 WebDriverWrapper has built-in Chrome driver.
 
-```
+```java
 WebDriver driver = wrapper.getWebDriver("Chrome");
 ```
 
@@ -61,7 +61,7 @@ WebDriver driver = wrapper.getWebDriver("Chrome");
 
 WebDriverWrapper has built-in ChromeMobileEmulation driver.
 
-```
+```java
 WebDriver driver = wrapper.getWebDriver("ChromeMobileEmulation");
 ```
 
@@ -69,7 +69,7 @@ WebDriver driver = wrapper.getWebDriver("ChromeMobileEmulation");
 
 WebDriverWrapper has built-in IE driver.
 
-```
+```java
 WebDriver driver = wrapper.getWebDriver("IE");
 ```
 
@@ -77,7 +77,7 @@ WebDriver driver = wrapper.getWebDriver("IE");
 
 If you'd like to create your own customized driver, you can implement the WebDriverSettingAbility interface, and override the getCapabilities() method to setup the capabilities (options) you want, and override the getName() method to specify a name to this customized driver so you can create this driver by this name later.
 
-```
+```java
 wrapper.addWebDriverSetting(new WebDriverSettingAbility() {
     @Override
     public Capabilities getCapabilities() {
@@ -99,7 +99,7 @@ WebDriver driver = wrapper.getWebDriver("CustomSafari");
 
 The node name - node address mappings should be added into WebDriverWrapper so it can create the remote driver for you.
 
-```
+```java
 wrapper.addRemoteNode("remote-safari-on-mac", "http://192.168.30.40:4040/wd/hub");
 wrapper.addRemoteNode("remote-chrome-on-win", "http://50.60.70.80:4040/wd/hub");
 
@@ -112,7 +112,7 @@ WebDriver remoteChromeDriver = wrapper.getWebDriver("Chrome", "remote-chrome-on-
 For more details about BrowserMob, please visit [its github](https://github.com/lightbody/browsermob-proxy).
 Currently, WebDriverWrapper only create BrowserMob driver running on a local machine, if you know how to setup BrowserMob so it can run on a remote node, please kindly let me know :)
 
-```
+```java
 WebDriver driver = wrapper.getHttpRequestsInterceptionChromeDriver();
 ```
 
