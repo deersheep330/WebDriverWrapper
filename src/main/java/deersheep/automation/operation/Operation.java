@@ -640,6 +640,10 @@ public class Operation {
         js.executeScript("arguments[0].scrollIntoView();", findElement(target));
     }
 
+    public void scrollToElementAlignCenter(Element target) {
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", findElement(target));
+    }
+
     public void quitAndCloseBrowser() {
         driver.quit();
     }
