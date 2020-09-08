@@ -3,6 +3,7 @@ package deersheep.automation.operation;
 import deersheep.automation.element.Element;
 import deersheep.automation.loggingprefs.LoggingPrefs;
 import deersheep.automation.operation.enums.ClickType;
+import io.cucumber.java.Scenario;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Coordinates;
@@ -675,6 +676,30 @@ public class Operation {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public byte[] screenshot() {
+
+        byte[] screenshotData = null;
+
+        try {
+            screenshotData = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+        } catch (WebDriverException | ClassCastException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return screenshotData;
+    }
+
+    public void screenshotAndEmbedInCucumberReport(Scenario scenario) {
+
+        try {
+            byte[] screenshotData = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+            scenario.embed(screenshotData, "image/png", scenario.getName());
+        } catch (WebDriverException | ClassCastException e) {
+            System.err.println(e.getMessage());
+        }
+
     }
 
 }
