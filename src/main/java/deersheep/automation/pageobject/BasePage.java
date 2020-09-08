@@ -34,4 +34,6 @@ public abstract class BasePage {
         op.navigateTo(url);
     }
 
+    public Operation getOperation() { return op; }
+
 }
