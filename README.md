@@ -97,7 +97,7 @@ WebDriver driver = wrapper.getWebDriver("CustomSafari");
 
 - __Get a (remote) driver runs on a remote node__
 
-The node name - node address mappings should be added into WebDriverWrapper so it can create the remote driver for you.
+The { node-name: node-address } mappings should be added into WebDriverWrapper so it can create the remote driver for you.
 
 ```java
 wrapper.addRemoteNode("remote-safari-on-mac", "http://192.168.30.40:4040/wd/hub");
@@ -117,6 +117,122 @@ WebDriver driver = wrapper.getHttpRequestsInterceptionChromeDriver();
 ```
 
 ### Operation
+
+- __Create a new Operation object__
+
+You can explicitly create an Operation object, but actually it's not necessary. If you let your page object extend [BasePage](#basepage), it already has Operation member variable built-in. 
+
+Explicitly create a new Operation:
+
+```java
+Operation op = new Operation(driver);
+```
+
+Or just extends [BasePage](#basepage):
+
+```java
+public abstract class BasePage {
+
+    protected Operation op;
+
+    public BasePage(WebDriver driver) {
+        this.op = new Operation(driver);
+    }
+}
+
+public class MainPage extends BasePage {
+    // ......
+}
+```
+
+- __Use methods provided by Operation__
+
+To use methods provided by Operation, you should wrap the DOM elements you'd like to interact with into an Element object. Element class has only 2 fields: the identifier (name) and the Xpath of this DOM element.
+
+```java
+public class Element {
+
+    ...
+
+    public Element(String name, String xpath) {
+        this.name = name;
+        this.xpath = xpath;
+    }
+
+    ...
+
+}
+```
+
+It could be convenient to store all the Elements you will use into a HashMap.
+
+```java
+Map<String, Element> elements = new HashMap<>();
+elements.put(elementName, new Element(elementName, elementXpath)));
+```
+
+Also, [BasePage](#basepage) has built-in map to store Elements and provide methods to easily set/access Elements in this map.
+
+```java
+public abstract class BasePage {
+    
+    ...
+
+    protected Map<String, Element> elements = new HashMap<>();
+
+    protected void addElement(String name, String xpath) {
+        elements.put(name, new Element(name, xpath));
+    }
+
+    protected Element getElement(String name) { return elements.get(name); }
+
+    ...
+
+}
+```
+
+Examples below assume your page objects extend BasePage so you can use the Operation object and Element-related methods provided by it. 
+
+- __Click an element and wait for another element__
+
+Click an element and expect another element to be displayed, if the expected element isn't present, an exception would be thrown.  
+
+```java
+op.clickAndWait(getElement("MyButton"), getElement("TriggeredElement"));
+```
+
+- __Click an element with offset and wait for another element__
+
+Click an element with offset and expect another element to be displayed, if the expected element isn't present, an exception would be thrown. It could be useful if you're dealing with SVG elements.
+
+```java
+op.clickWithOffsetAndWait(getElement("MySvgElement"), 10, 30, getElement("TriggeredSvgElement"));
+```
+
+- __Hover an element and wait for another element__
+
+Hover an element and expect another element to be displayed, if the expected element isn't present, an exception would be thrown.  
+
+```java
+op.hoverAndWait(getElement("MyText"), getElement("TriggeredTooltip"));
+```
+
+- __Hover an element with offset and wait for another element__
+
+Hover an element with offset and expect another element to be displayed, if the expected element isn't present, an exception would be thrown. It could be useful if you're dealing with SVG elements.
+
+```java
+op.hoverWithOffsetAndWait(getElement("MySvgElement"), 10, 30, getElement("TriggeredSvgElement"));
+```
+
+- __Test if an element is present or not__
+
+Test if an element is present or not for a certain timeout. Which means if the target element not found, it would retry several times before return.
+
+```java
+boolean found = op.tryToFind(getElement("GDPRModal"));
+```
+
 
 
 
