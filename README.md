@@ -329,15 +329,15 @@ public class LoginPage extends Basepage {
 
 | API | Description |
 | --- | ----------- |
-| getInstance() | Get WebDriverWrapper singleton |
-| setPageLoadTimeoutInSec(int sec) | Change webdriver page load timeout. It's 60 sec by default.  |
-| addWebDriverSetting(WebDriverSettingAbility webDriverSettingAbility) | Add a customized webdriver setting to create a customized webdriver later |
-| addRemoteNode(String name, String remoteAddress) | Add a remote node setting into the WebDriverWrapper to create a remote webdriver for this remote node later |
-| getCurrentActiveWebDriverSettingList() | Get the list of WebDriverSettings in this WebDriverWrapper |
-| getCurrentActiveRemoteNodeList() | Get the list of remote nodes in this WebDriverWrapper |
+| getInstance | Get WebDriverWrapper singleton |
+| setPageLoadTimeoutInSec | Change webdriver page load timeout. It's 60 sec by default.  |
+| addWebDriverSetting | Add a customized webdriver setting to create a customized webdriver later |
+| addRemoteNode | Add a remote node setting into the WebDriverWrapper to create a remote webdriver for this remote node later |
+| getCurrentActiveWebDriverSettingList | Get the list of WebDriverSettings in this WebDriverWrapper |
+| getCurrentActiveRemoteNodeList | Get the list of remote nodes in this WebDriverWrapper |
 | getWebDriver(String webDriverSettingName, String remoteNodeName) | Get RemoteWebDriver for the specific setting and connect to the remote node |
-| getWebDriver(String webDriverSettingName) | Get ChromeDriver / FirefoxDriver / InternetExplorerDriver / EdgeDriver / OperaDriver and run the automation test on local machine without standalone selenium server |
-| getHttpRequestsInterceptionChromeDriver() | Use BrowserMob to intercept http requests so we can get details of the headers/payloads of every requests. Only work when browser = Chrome and Machine = Local |
+| getWebDriver(String webDriverSettingName) | Get WebDriver runs on local machine without standalone selenium server |
+| getHttpRequestsInterceptionChromeDriver | Use BrowserMob to intercept http requests so we can get details of the headers/payloads of every requests. Only work when browser = Chrome and Machine = Local |
 
 #### Operation
 
@@ -345,173 +345,171 @@ public class LoginPage extends Basepage {
 
 | API | Description |
 | --- | ----------- |
-| isIE() | Test current webdriver is an IEDriver or not |
+| isIE | Test current webdriver is an IEDriver or not |
 
 - __Change default setting__
 
 | API | Description |
 | --- | ----------- |
-| setTargetElementWaitTimeoutInSec(long sec) | Set target element wait timeout |
-| setWaitForElementWaitTimeoutInSec(long sec) | Set waitFor element wait timeout |
+| setTargetElementWaitTimeoutInSec | Set target element wait timeout |
+| setWaitForElementWaitTimeoutInSec | Set waitFor element wait timeout |
 
 - __"Click and hold" method group__
 
 | API | Description |
 | --- | ----------- |
-| clickAndHold(Element target) | Click and hold "target" element and no need to wait for anything |
-| clickAndHoldWithOffset(Element target, int xOffset, int yOffset) | Click and hold "target" element with offset and no need to wait for anything |
-| clickAndHoldAndWait(Element target, Element waitFor) | click and hold "target" element and wait for "waitFor" element |
-| clickAndHoldWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) | click and hold "target" element with offset and wait for "waitFor" element |
-| clickAndHoldAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | click and hold "target" element and wait for "waitFor" element with customized timeout |
-| clickAndHoldWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | click and hold "target" element with offset and wait for "waitFor" element with customized timeout |
-| release(Element target) | release "target" element after "click and hold" |
+| clickAndHold | Click and hold "target" element and no need to wait for anything |
+| clickAndHoldWithOffset | Click and hold "target" element with offset and no need to wait for anything |
+| clickAndHoldAndWait | Click and hold "target" element and wait for "waitFor" element |
+| clickAndHoldWithOffsetAndWait | Click and hold "target" element with offset and wait for "waitFor" element |
+| clickAndHoldAndWait | Click and hold "target" element and wait for "waitFor" element with customized timeout |
+| clickAndHoldWithOffsetAndWait | Click and hold "target" element with offset and wait for "waitFor" element with customized timeout |
+| release | Release "target" element after "click and hold" |
 
 - __"Hover" method group__
 
 | API | Description |
 | --- | ----------- |
-| hover(Element target) | hover "target" element and no need to wait for anything |
-| hoverWithOffset(Element target, int xOffset, int yOffset) | hover "target" element with offset and no need to wait for anything |
-| hoverAndWait(Element target, Element waitFor) | hover "target" element and wait for "waitFor" element |
-| hoverWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) | hover "target" element with offset and wait for "waitFor" element |
-| hoverAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | hover "target" element and wait for "waitFor" element with customized timeout |
-| hoverWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | hover "target" element with offset and wait for "waitFor" element with customized timeout |
+| hover | Hover "target" element and no need to wait for anything |
+| hoverWithOffset | Hover "target" element with offset and no need to wait for anything |
+| hoverAndWait | Hover "target" element and wait for "waitFor" element |
+| hoverWithOffsetAndWait | Hover "target" element with offset and wait for "waitFor" element |
+| hoverAndWait | Hover "target" element and wait for "waitFor" element with customized timeout |
+| hoverWithOffsetAndWait | Hover "target" element with offset and wait for "waitFor" element with customized timeout |
 
 - __"Right click" method group__
 
 | API | Description |
 | --- | ----------- |
-| contextClick(Element target) | right click "target" element and no need to wait for anything |
-| contextClickWithOffset(Element target, int xOffset, int yOffset) | right click "target" element with offset and no need to wait for anything |
-| contextClickAndWait(Element target, Element waitFor) | right click "target" element and wait for "waitFor" element |
-| contextClickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) | right click "target" element with offset and wait for "waitFor" element |
-| contextClickAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | right click "target" element and wait for "waitFor" element with customized timeout |
-| contextClickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | right click "target" element with offset and wait for "waitFor" element with customized timeout |
+| contextClick | Right click "target" element and no need to wait for anything |
+| contextClickWithOffset | Right click "target" element with offset and no need to wait for anything |
+| contextClickAndWait | Right click "target" element and wait for "waitFor" element |
+| contextClickWithOffsetAndWait | Right click "target" element with offset and wait for "waitFor" element |
+| contextClickAndWait | Right click "target" element and wait for "waitFor" element with customized timeout |
+| contextClickWithOffsetAndWait | Right click "target" element with offset and wait for "waitFor" element with customized timeout |
 
 - __"Click" method group__
 
 | API | Description |
 | --- | ----------- |
-| click(Element target) | click "target" element and no need to wait for anything |
-| clickWithOffset(Element target, int xOffset, int yOffset) | click "target" element with offset and no need to wait for anything |
-| clickAndWait(Element target, Element waitFor) | click "target" element and wait for "waitFor" element |
-| clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) | click "target" element with offset and wait for "waitFor" element |
-| clickAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | click "target" element and wait for "waitFor" element with customized timeout |
-| clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | click "target" element with offset and wait for "waitFor" element with customized timeout |
+| click | Click "target" element and no need to wait for anything |
+| clickWithOffset | Click "target" element with offset and no need to wait for anything |
+| clickAndWait | Click "target" element and wait for "waitFor" element |
+| clickWithOffsetAndWait | Click "target" element with offset and wait for "waitFor" element |
+| clickAndWait | Click "target" element and wait for "waitFor" element with customized timeout |
+| clickWithOffsetAndWait | Click "target" element with offset and wait for "waitFor" element with customized timeout |
 
 - __Check for existence__
 
 | API | Description |
 | --- | ----------- |
-| isExist(Element target) | check "target" element is displayed or not |
-| tryToFind(Element target) | test "target" element is exist or not. if "target" is exist, return true. if "target" isn't exist, return false, no exception would be thrown |
-| tryToFind(Element target, long targetElementWaitTimeoutInSec) | test "target" element is exist or not. if "target" is exist, return true. if "target" isn't exist, return false, no exception would be thrown |
-| waitFor(Element waitFor) | wait for "waitFor" element. if not found after timeout, exception would be thrown |
-| waitFor(Element waitFor, long waitForElementWaitTimeoutInSec) | wait for "waitFor" element. if not found after timeout, exception would be thrown |
+| isExist | Check "target" element is displayed or not |
+| tryToFind | Test "target" element is exist or not. If "target" is exist, return true, else if "target" isn't exist, return false. No exception would be thrown |
+| waitFor | Wait for "waitFor" element. If it's not found after timeout, an exception would be thrown |
 
 - __Get WebElement(s)__
 
 | API | Description |
 | --- | ----------- |
-| findElement(Element target) | Get single WebElement |
-| findElements(Element target) | Get list of WebElements |
+| findElement | Get single WebElement |
+| findElements | Get list of WebElements |
 
 - __Send text or select__
 
 | API | Description |
 | --- | ----------- |
-| sendText(Element target, String text) | send text to InputBox or TextArea |
-| selectDropdownMenuOptionByValue(Element dropdown, String valueToBeSelected) | Select dropdown menu option by value |
+| sendText | Send text to InputBox or TextArea |
+| selectDropdownMenuOptionByValue | Select dropdown menu option by value |
 
 - __WebDriver navigation or reload__
 
 | API | Description |
 | --- | ----------- |
-| navigateTo(String url) | Webdriver navigate to url |
-| reloadPage() | Webdriver reload page |
+| navigateTo | Webdriver navigate to url |
+| reloadPage | Webdriver reload page |
 
 - __Tab-related operations__
 
 | API | Description |
 | --- | ----------- |
-| IsNewTabBeingOpened() | Check if a new tab being opened |
-| switchToFirstNewlyOpenedTab() | Switch to the first newly opened tab |
-| closeNewlyOpenedTabs() | close newly opened tab |
-| getCurrentOpenedTabsCount() | Get current opened tabs count |
-| getCurrentOpenedTabsSet() | Get current opened tabs handles |
-| switchToTab(String handle) | Switch to another tab according to handle |
-| saveCurrentTabAsDefaultTab() | Save current tab as default tab |
-| getDefaultTabHandle() | Get default tab handle |
+| IsNewTabBeingOpened | Check if a new tab being opened |
+| switchToFirstNewlyOpenedTab | Switch to the first newly opened tab |
+| closeNewlyOpenedTabs | close newly opened tab |
+| getCurrentOpenedTabsCount | Get current opened tabs count |
+| getCurrentOpenedTabsSet | Get current opened tabs handles |
+| switchToTab | Switch to another tab according to handle |
+| saveCurrentTabAsDefaultTab | Save current tab as default tab |
+| getDefaultTabHandle | Get default tab handle |
 
 - __Click alert__
 
 | API | Description |
 | --- | ----------- |
-| clickAlertOK() | Click alert OK |
+| clickAlertOK | Click alert OK |
 
 - __Iframe-related operations__
 
 | API | Description |
 | --- | ----------- |
-| switchToIframe(Element target) | Switch to Iframe |
-| switchFromIframeToMainHTML() | Switch back from Iframe to main content |
+| switchToIframe | Switch to Iframe |
+| switchFromIframeToMainHTML | Switch back from Iframe to main content |
 
 - __Scroll-related operations__
 
 | API | Description |
 | --- | ----------- |
-| scrollWindowTo(String xOffset, String yOffset) | scroll window to the specified offset |
-| scrollToElement(Element target) | Scroll to element (align start) |
-| scrollToElementAlignCenter(Element target) | Scroll to element (align center) |
+| scrollWindowTo | Scroll window to the specified offset |
+| scrollToElement | Scroll to element (align start) |
+| scrollToElementAlignCenter | Scroll to element (align center) |
 
 - __Webdriver quit__
 
 | API | Description |
 | --- | ----------- |
-| quitAndCloseBrowser() | Call driver.quit() to close browser |
+| quitAndCloseBrowser | Call driver.quit() to close browser |
 
 - __LoggingPrefs-related operations__
 
 | API | Description |
 | --- | ----------- |
-| getRequestUrlFromLoggingPrefs(String... keywords) | Search for request urls according to keywords. Only works for Chrome driver with loggingPrefs enabled |
-| enableSaveCookieFromLoggingPrefs(boolean enabled) | Save cookie in Operation instance. Only works for Chrome driver with loggingPrefs enabled |
-| saveSpecialHeader(String headerName) | Save specific header in Operation instance. Only works for Chrome driver with loggingPrefs enabled |
+| getRequestUrlFromLoggingPrefs | Search for request urls according to keywords. Only works for Chrome driver with loggingPrefs enabled |
+| enableSaveCookieFromLoggingPrefs | Save cookie in Operation instance. Only works for Chrome driver with loggingPrefs enabled |
+| saveSpecialHeader | Save specific header in Operation instance. Only works for Chrome driver with loggingPrefs enabled |
 
 - __Thread.sleep__
 
 | API | Description |
 | --- | ----------- |
-| sleep(long millis) | Sleep for millis |
+| sleep | Sleep for millis |
 
 - __WebDriver screenshot__
 
 | API | Description |
 | --- | ----------- |
-| screenshot() | Screenshot |
-| screenshotAndEmbedInCucumberReport(Scenario scenario) | Screenshot and embed in Cucumber report |
+| screenshot | Screenshot |
+| screenshotAndEmbedInCucumberReport | Screenshot and embed in Cucumber report |
 
 #### BasePage
 
 | API | Description |
 | --- | ----------- |
-| addElement(String name, String xpath) | Store the element in the HashMap of BasePage |
-| getElement(String name) | Get the element from the HashMap |
-| setUrl(String url) | Set url for this page |
-| getUrl() | Get url for this page |
-| navigate() | Navigate to url |
-| getOperation() | Get Operation instance |
+| addElement | Store the element in the HashMap of BasePage |
+| getElement | Get the element from the HashMap |
+| setUrl | Set url for this page |
+| getUrl | Get url for this page |
+| navigate | Navigate to url |
+| getOperation | Get Operation instance |
 
 #### Utility Tools
 
 | API | Description |
 | --- | ----------- |
-| NumberTool.findIntFromString(String str) | Find integer from string |
-| NumberTool.parseIntFromString(String str) | Parse integer from string |
-| StringTool.replaceTextInFile(Path filePath, String toBeReplaced, String replaceWith) | Replace specific text the a file |
-| XlsxTool.getWorkbookFromHttpURLConnection(HttpURLConnection connection) | Get Xlsx Workbook from HttpUrlConnection |
-| XlsxTool.getDefaultSheetFromWorkbook(XSSFWorkbook workbook) | Get default sheet from workbook |
-| XlsxTool.getRowCountOfSheet(XSSFSheet sheet) | Get row count of sheet |
+| NumberTool.findIntFromString | Find integer from string |
+| NumberTool.parseIntFromString | Parse integer from string |
+| StringTool.replaceTextInFile | Replace specific text the a file |
+| XlsxTool.getWorkbookFromHttpURLConnection | Get Xlsx Workbook from HttpUrlConnection |
+| XlsxTool.getDefaultSheetFromWorkbook | Get default sheet from workbook |
+| XlsxTool.getRowCountOfSheet | Get row count of sheet |
 
 ## Demo Projects
 
