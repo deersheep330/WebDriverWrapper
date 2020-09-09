@@ -193,9 +193,17 @@ public abstract class BasePage {
 
 Examples below assume your page objects extend BasePage so you can use the Operation object and Element-related methods provided by it. 
 
+- __Click an element__
+
+Click an element. If the element isn't clickable because it's not present, it would retry several times. If the element still not present so not clickable, an exception would be thrown.  
+
+```java
+op.click(getElement("MyButton"));
+```
+
 - __Click an element and wait for another element__
 
-Click an element and expect another element to be displayed, if the expected element isn't present, an exception would be thrown.  
+Click an element and expect another element to be displayed, if the expected element isn't present, it would retry several times. If the expected element still not present, an exception would be thrown.  
 
 ```java
 op.clickAndWait(getElement("MyButton"), getElement("TriggeredElement"));
@@ -203,7 +211,7 @@ op.clickAndWait(getElement("MyButton"), getElement("TriggeredElement"));
 
 - __Click an element with offset and wait for another element__
 
-Click an element with offset and expect another element to be displayed, if the expected element isn't present, an exception would be thrown. It could be useful if you're dealing with SVG elements.
+Click an element with offset and expect another element to be displayed, if the expected element isn't present, it would retry several times. If the expected element still not present, an exception would be thrown. It could be useful if you're dealing with SVG elements.
 
 ```java
 op.clickWithOffsetAndWait(getElement("MySvgElement"), 10, 30, getElement("TriggeredSvgElement"));
@@ -211,7 +219,7 @@ op.clickWithOffsetAndWait(getElement("MySvgElement"), 10, 30, getElement("Trigge
 
 - __Hover an element and wait for another element__
 
-Hover an element and expect another element to be displayed, if the expected element isn't present, an exception would be thrown.  
+Hover an element and expect another element to be displayed, if the expected element isn't present, it would retry several times. If the expected element still not present, an exception would be thrown.  
 
 ```java
 op.hoverAndWait(getElement("MyText"), getElement("TriggeredTooltip"));
@@ -219,7 +227,7 @@ op.hoverAndWait(getElement("MyText"), getElement("TriggeredTooltip"));
 
 - __Hover an element with offset and wait for another element__
 
-Hover an element with offset and expect another element to be displayed, if the expected element isn't present, an exception would be thrown. It could be useful if you're dealing with SVG elements.
+Hover an element with offset and expect another element to be displayed, if the expected element isn't present, it would retry several times. If the expected element still not present, an exception would be thrown. It could be useful if you're dealing with SVG elements.
 
 ```java
 op.hoverWithOffsetAndWait(getElement("MySvgElement"), 10, 30, getElement("TriggeredSvgElement"));
@@ -233,12 +241,191 @@ Test if an element is present or not for a certain timeout. Which means if the t
 boolean found = op.tryToFind(getElement("GDPRModal"));
 ```
 
+Test of an element is present or not. This method would return immediately. 
 
+```java
+boolean found = op.isExist(getElement("GDPRModal"));
+```
 
+- __Wait for an element__
+
+Wait for an element being present, if it's not present, an exception would be thrown.
+
+```java
+op.waitFor(getElement("GDPRModal"));
+```
+
+- __Send text to an input box or textarea__
+
+```java
+op.sendText(getElement("MyInput"));
+```
 
 ### BasePage
 
+- __BasePage is the parent page object for other page objects to extend__
+
+It has Operation object as a member variable, HashMap for storing web elements, and convenient methods to set/get elements in the HashMap.
+
+```java
+public abstract class BasePage {
+
+    protected WebDriver driver;
+    protected Operation op;
+    protected Map<String, Element> elements = new HashMap<>();
+    protected String url;
+
+    public BasePage(WebDriver driver) {
+        this.driver = driver;
+        this.op = new Operation(this.driver);
+    }
+
+    protected void addElement(String name, String xpath) {
+        elements.put(name, new Element(name, xpath));
+    }
+
+    protected Element getElement(String name) { return elements.get(name); }
+
+    public void navigate() {
+        if (url == null) throw new RuntimeException("url is null! please set it in constructor or using setUrl method.");
+        op.navigateTo(url);
+    }
+
+    ...
+
+}
+```
+
+- __Implement your own page object by extending BasePage__
+
+```java
+public class LoginPage extends Basepage {
+
+    LoginPage(WebDriver driver) {
+        super(driver);
+
+        url = "http://my-site.com/login";
+
+        addElement("LoginButton", "xpath-for-login-button");
+        addElement("LoginForm", "xpath-for-login-form");
+        addElement("EmailInput", "xpath-for-email-input");
+        addElement("PasswordInput", "xpath-for-password-input");
+        addElement("Submit", "xpath-for-submit");
+    }
+
+    public void login(String email, String password) {
+        op.clickAndWait(getElement("LoginButton"), getElement("LoginForm"));
+        op.sendText(getElement("EmailInput"), email);
+        op.sendText(getElement("PasswordInput"), password);
+        op.click(getElement("Submit"));
+    }
+
+}
+```
+
 ## Detailed API Docs
+
+#### WebDriverWrapper
+
+| API | Description |
+| --- | ----------- |
+| getInstance() | Get WebDriverWrapper singleton |
+| setPageLoadTimeoutInSec(int sec) | Change webdriver page load timeout. It's 60 sec by default.  |
+| addWebDriverSetting(WebDriverSettingAbility webDriverSettingAbility) | Add a customized webdriver setting to create a customized webdriver later |
+| addRemoteNode(String name, String remoteAddress) | Add a remote node setting into the WebDriverWrapper to create a remote webdriver for this remote node later |
+| getCurrentActiveWebDriverSettingList() | Get the list of WebDriverSettings in this WebDriverWrapper |
+| getCurrentActiveRemoteNodeList() | Get the list of remote nodes in this WebDriverWrapper |
+| getWebDriver(String webDriverSettingName, String remoteNodeName) | Get RemoteWebDriver for the specific setting and connect to the remote node |
+| getWebDriver(String webDriverSettingName) | Get ChromeDriver / FirefoxDriver / InternetExplorerDriver / EdgeDriver / OperaDriver and run the automation test on local machine without standalone selenium server |
+| getHttpRequestsInterceptionChromeDriver() | Use BrowserMob to intercept http requests so we can get details of the headers/payloads of every requests. Only work when browser = Chrome and Machine = Local |
+
+#### Operation
+
+| API | Description |
+| --- | ----------- |
+| isIE() | Test current webdriver is an IEDriver or not |
+| setTargetElementWaitTimeoutInSec(long sec) | Set target element wait timeout |
+| setWaitForElementWaitTimeoutInSec(long sec) | Set waitFor element wait timeout |
+| clickAndHold(Element target) | Click and hold "target" element and no need to wait for anything |
+| clickAndHoldWithOffset(Element target, int xOffset, int yOffset) | Click and hold "target" element with offset and no need to wait for anything |
+| clickAndHoldAndWait(Element target, Element waitFor) | click and hold "target" element and wait for "waitFor" element |
+| clickAndHoldWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) | click and hold "target" element with offset and wait for "waitFor" element |
+| clickAndHoldAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | click and hold "target" element and wait for "waitFor" element with customized timeout |
+| clickAndHoldWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | click and hold "target" element with offset and wait for "waitFor" element with customized timeout |
+| release(Element target) | release "target" element after "click and hold" |
+| hover(Element target) | hover "target" element and no need to wait for anything |
+| hoverWithOffset(Element target, int xOffset, int yOffset) | hover "target" element with offset and no need to wait for anything |
+| hoverAndWait(Element target, Element waitFor) | hover "target" element and wait for "waitFor" element |
+| hoverWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) | hover "target" element with offset and wait for "waitFor" element |
+| hoverAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | hover "target" element and wait for "waitFor" element with customized timeout |
+| hoverWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | hover "target" element with offset and wait for "waitFor" element with customized timeout |
+| contextClick(Element target) | right click "target" element and no need to wait for anything |
+| contextClickWithOffset(Element target, int xOffset, int yOffset) | right click "target" element with offset and no need to wait for anything |
+| contextClickAndWait(Element target, Element waitFor) | right click "target" element and wait for "waitFor" element |
+| contextClickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) | right click "target" element with offset and wait for "waitFor" element |
+| contextClickAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | right click "target" element and wait for "waitFor" element with customized timeout |
+| contextClickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | right click "target" element with offset and wait for "waitFor" element with customized timeout |
+| click(Element target) | click "target" element and no need to wait for anything |
+| clickWithOffset(Element target, int xOffset, int yOffset) | click "target" element with offset and no need to wait for anything |
+| clickAndWait(Element target, Element waitFor) | click "target" element and wait for "waitFor" element |
+| clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) | click "target" element with offset and wait for "waitFor" element |
+| clickAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | click "target" element and wait for "waitFor" element with customized timeout |
+| clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | click "target" element with offset and wait for "waitFor" element with customized timeout |
+| tryToFind(Element target) | test "target" element is exist or not. if "target" is exist, return true. if "target" isn't exist, return false, no exception would be thrown |
+| tryToFind(Element target, long targetElementWaitTimeoutInSec) | test "target" element is exist or not. if "target" is exist, return true. if "target" isn't exist, return false, no exception would be thrown |
+| waitFor(Element waitFor) | wait for "waitFor" element. if not found after timeout, exception would be thrown |
+| waitFor(Element waitFor, long waitForElementWaitTimeoutInSec) | wait for "waitFor" element. if not found after timeout, exception would be thrown |
+| isExist(Element target) | check "target" element is displayed or not |
+| findElement(Element target) | Get single WebElement |
+| findElements(Element target) | Get list of WebElements |
+| sendText(Element target, String text) | send text to InputBox or TextArea |
+| selectDropdownMenuOptionByValue(Element dropdown, String valueToBeSelected) | Select dropdown menu option by value |
+| navigateTo(String url) | Webdriver navigate to url |
+| reloadPage() | Webdriver reload page |
+| IsNewTabBeingOpened() | Check if a new tab being opened |
+| switchToFirstNewlyOpenedTab() | Switch to the first newly opened tab |
+| closeNewlyOpenedTabs() | close newly opened tab |
+| getCurrentOpenedTabsCount() | Get current opened tabs count |
+| getCurrentOpenedTabsSet() | Get current opened tabs handles |
+| switchToTab(String handle) | Switch to another tab according to handle |
+| saveCurrentTabAsDefaultTab() | Save current tab as default tab |
+| getDefaultTabHandle() | Get default tab handle |
+| clickAlertOK() | Click alert OK |
+| switchToIframe(Element target) | Switch to Iframe |
+| switchFromIframeToMainHTML() | Switch back from Iframe to main content |
+| scrollWindowTo(String xOffset, String yOffset) | scroll window to the specified offset |
+| scrollToElement(Element target) | Scroll to element (align start) |
+| scrollToElementAlignCenter(Element target) | Scroll to element (align center) |
+| quitAndCloseBrowser() | Call driver.quit() to close browser |
+| getRequestUrlFromLoggingPrefs(String... keywords) | Search for request urls according to keywords. Only works for Chrome driver with loggingPrefs enabled |
+| enableSaveCookieFromLoggingPrefs(boolean enabled) | Save cookie in Operation instance. Only works for Chrome driver with loggingPrefs enabled |
+| saveSpecialHeader(String headerName) | Save specific header in Operation instance. Only works for Chrome driver with loggingPrefs enabled |
+| sleep(long millis) | Sleep for millis |
+| screenshot() | Screenshot |
+| screenshotAndEmbedInCucumberReport(Scenario scenario) | Screenshot and embed in Cucumber report |
+
+#### BasePage
+
+| API | Description |
+| --- | ----------- |
+| addElement(String name, String xpath) | Store the element in the HashMap of BasePage |
+| getElement(String name) | Get the element from the HashMap |
+| setUrl(String url) | Set url for this page |
+| getUrl() | Get url for this page |
+| navigate() | Navigate to url |
+| getOperation() | Get Operation instance |
+
+#### Utility Tools
+
+| API | Description |
+| --- | ----------- |
+| JunitReportTool.modifyJunitReportClassName(Path junitReportFilePath, String origClassName, String newClassName) | <p>(usage 1)</p>the default junit report class (display) name would be the full package name of the test case. e.g. com.yourcompany.automation.projectname.testclassname. the name maybe too long or maybe you want a more simple and expressive name</p><p>(usage 2)</p><p>the default junit report class (display) name of a cucumber test would be the feature name. but if you have 2 cucumber runners share the same feature file, the report class name would be the same</p><p>use this method to modify junit report class name</p> |
+| NumberTool.findIntFromString(String str) | Find integer from string |
+| NumberTool.parseIntFromString(String str) | Parse integer from string |
+| StringTool.replaceTextInFile(Path filePath, String toBeReplaced, String replaceWith) | Replace specific text the a file |
+| XlsxTool.getWorkbookFromHttpURLConnection(HttpURLConnection connection) | Get Xlsx Workbook from HttpUrlConnection |
+| XlsxTool.getDefaultSheetFromWorkbook(XSSFWorkbook workbook) | Get default sheet from workbook |
+| XlsxTool.getRowCountOfSheet(XSSFSheet sheet) | Get row count of sheet |
 
 ## Demo Projects
 

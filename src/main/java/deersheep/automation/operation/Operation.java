@@ -113,35 +113,35 @@ public class Operation {
      */
 
     /*
-    click "target" element and no need to wait for anything
+    click and hold "target" element and no need to wait for anything
     */
     public void clickAndHold(Element target) {
         _clickWithOffsetAndWait(target, 0, 0,null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CLICK_AND_HOLD);
     }
 
     /*
-    click "target" element with offset and no need to wait for anything
+    click and hold "target" element with offset and no need to wait for anything
     */
     public void clickAndHoldWithOffset(Element target, int xOffset, int yOffset) {
         _clickWithOffsetAndWait(target, xOffset, yOffset, null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CLICK_AND_HOLD);
     }
 
     /*
-    click "target" element and wait for "waitFor" element
+    click and hold "target" element and wait for "waitFor" element
     */
     public void clickAndHoldAndWait(Element target, Element waitFor) {
         _clickWithOffsetAndWait(target, 0, 0, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CLICK_AND_HOLD);
     }
 
     /*
-    click "target" element with offset and wait for "waitFor" element
+    click and hold "target" element with offset and wait for "waitFor" element
     */
     public void clickAndHoldWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) {
         _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CLICK_AND_HOLD);
     }
 
     /*
-    click "target" element and wait for "waitFor" element
+    click and hold "target" element and wait for "waitFor" element
     customize timeout
     */
     public void clickAndHoldAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
@@ -149,7 +149,7 @@ public class Operation {
     }
 
     /*
-    click "target" element with offset and wait for "waitFor" element
+    click and hold "target" element with offset and wait for "waitFor" element
     customize timeout
     */
     public void clickAndHoldWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
@@ -216,35 +216,35 @@ public class Operation {
      */
 
     /*
-    click "target" element and no need to wait for anything
+    right click "target" element and no need to wait for anything
     */
     public void contextClick(Element target) {
         _clickWithOffsetAndWait(target, 0, 0,null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CONTEXT_CLICK);
     }
 
     /*
-    click "target" element with offset and no need to wait for anything
+    right click "target" element with offset and no need to wait for anything
     */
     public void contextClickWithOffset(Element target, int xOffset, int yOffset) {
         _clickWithOffsetAndWait(target, xOffset, yOffset, null, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CONTEXT_CLICK);
     }
 
     /*
-    click "target" element and wait for "waitFor" element
+    right click "target" element and wait for "waitFor" element
     */
     public void contextClickAndWait(Element target, Element waitFor) {
         _clickWithOffsetAndWait(target, 0, 0, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CONTEXT_CLICK);
     }
 
     /*
-    click "target" element with offset and wait for "waitFor" element
+    right click "target" element with offset and wait for "waitFor" element
     */
     public void contextClickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) {
         _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, defaultTargetElementWaitTimeoutInSec, defaultWaitForElementWaitTimeoutInSec, ClickType.CONTEXT_CLICK);
     }
 
     /*
-    click "target" element and wait for "waitFor" element
+    right click "target" element and wait for "waitFor" element
     customize timeout
     */
     public void contextClickAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
@@ -252,7 +252,7 @@ public class Operation {
     }
 
     /*
-    click "target" element with offset and wait for "waitFor" element
+    right click "target" element with offset and wait for "waitFor" element
     customize timeout
     */
     public void contextClickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
