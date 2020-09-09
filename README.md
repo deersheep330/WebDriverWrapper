@@ -341,11 +341,23 @@ public class LoginPage extends Basepage {
 
 #### Operation
 
+- __Check browser type__
+
 | API | Description |
 | --- | ----------- |
 | isIE() | Test current webdriver is an IEDriver or not |
+
+- __Change default setting__
+
+| API | Description |
+| --- | ----------- |
 | setTargetElementWaitTimeoutInSec(long sec) | Set target element wait timeout |
 | setWaitForElementWaitTimeoutInSec(long sec) | Set waitFor element wait timeout |
+
+- __"Click and hold" method group__
+
+| API | Description |
+| --- | ----------- |
 | clickAndHold(Element target) | Click and hold "target" element and no need to wait for anything |
 | clickAndHoldWithOffset(Element target, int xOffset, int yOffset) | Click and hold "target" element with offset and no need to wait for anything |
 | clickAndHoldAndWait(Element target, Element waitFor) | click and hold "target" element and wait for "waitFor" element |
@@ -353,35 +365,75 @@ public class LoginPage extends Basepage {
 | clickAndHoldAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | click and hold "target" element and wait for "waitFor" element with customized timeout |
 | clickAndHoldWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | click and hold "target" element with offset and wait for "waitFor" element with customized timeout |
 | release(Element target) | release "target" element after "click and hold" |
+
+- __"Hover" method group__
+
+| API | Description |
+| --- | ----------- |
 | hover(Element target) | hover "target" element and no need to wait for anything |
 | hoverWithOffset(Element target, int xOffset, int yOffset) | hover "target" element with offset and no need to wait for anything |
 | hoverAndWait(Element target, Element waitFor) | hover "target" element and wait for "waitFor" element |
 | hoverWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) | hover "target" element with offset and wait for "waitFor" element |
 | hoverAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | hover "target" element and wait for "waitFor" element with customized timeout |
 | hoverWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | hover "target" element with offset and wait for "waitFor" element with customized timeout |
+
+- __"Right click" method group__
+
+| API | Description |
+| --- | ----------- |
 | contextClick(Element target) | right click "target" element and no need to wait for anything |
 | contextClickWithOffset(Element target, int xOffset, int yOffset) | right click "target" element with offset and no need to wait for anything |
 | contextClickAndWait(Element target, Element waitFor) | right click "target" element and wait for "waitFor" element |
 | contextClickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) | right click "target" element with offset and wait for "waitFor" element |
 | contextClickAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | right click "target" element and wait for "waitFor" element with customized timeout |
 | contextClickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | right click "target" element with offset and wait for "waitFor" element with customized timeout |
+
+- __"Click" method group__
+
+| API | Description |
+| --- | ----------- |
 | click(Element target) | click "target" element and no need to wait for anything |
 | clickWithOffset(Element target, int xOffset, int yOffset) | click "target" element with offset and no need to wait for anything |
 | clickAndWait(Element target, Element waitFor) | click "target" element and wait for "waitFor" element |
 | clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor) | click "target" element with offset and wait for "waitFor" element |
 | clickAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | click "target" element and wait for "waitFor" element with customized timeout |
 | clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) | click "target" element with offset and wait for "waitFor" element with customized timeout |
+
+- __Check for existence__
+
+| API | Description |
+| --- | ----------- |
+| isExist(Element target) | check "target" element is displayed or not |
 | tryToFind(Element target) | test "target" element is exist or not. if "target" is exist, return true. if "target" isn't exist, return false, no exception would be thrown |
 | tryToFind(Element target, long targetElementWaitTimeoutInSec) | test "target" element is exist or not. if "target" is exist, return true. if "target" isn't exist, return false, no exception would be thrown |
 | waitFor(Element waitFor) | wait for "waitFor" element. if not found after timeout, exception would be thrown |
 | waitFor(Element waitFor, long waitForElementWaitTimeoutInSec) | wait for "waitFor" element. if not found after timeout, exception would be thrown |
-| isExist(Element target) | check "target" element is displayed or not |
+
+- __Get WebElement(s)__
+
+| API | Description |
+| --- | ----------- |
 | findElement(Element target) | Get single WebElement |
 | findElements(Element target) | Get list of WebElements |
+
+- __Send text or select__
+
+| API | Description |
+| --- | ----------- |
 | sendText(Element target, String text) | send text to InputBox or TextArea |
 | selectDropdownMenuOptionByValue(Element dropdown, String valueToBeSelected) | Select dropdown menu option by value |
+
+- __WebDriver navigation or reload__
+
+| API | Description |
+| --- | ----------- |
 | navigateTo(String url) | Webdriver navigate to url |
 | reloadPage() | Webdriver reload page |
+
+- __Tab-related operations__
+
+| API | Description |
+| --- | ----------- |
 | IsNewTabBeingOpened() | Check if a new tab being opened |
 | switchToFirstNewlyOpenedTab() | Switch to the first newly opened tab |
 | closeNewlyOpenedTabs() | close newly opened tab |
@@ -390,17 +442,52 @@ public class LoginPage extends Basepage {
 | switchToTab(String handle) | Switch to another tab according to handle |
 | saveCurrentTabAsDefaultTab() | Save current tab as default tab |
 | getDefaultTabHandle() | Get default tab handle |
+
+- __Click alert__
+
+| API | Description |
+| --- | ----------- |
 | clickAlertOK() | Click alert OK |
+
+- __Iframe-related operations__
+
+| API | Description |
+| --- | ----------- |
 | switchToIframe(Element target) | Switch to Iframe |
 | switchFromIframeToMainHTML() | Switch back from Iframe to main content |
+
+- __Scroll-related operations__
+
+| API | Description |
+| --- | ----------- |
 | scrollWindowTo(String xOffset, String yOffset) | scroll window to the specified offset |
 | scrollToElement(Element target) | Scroll to element (align start) |
 | scrollToElementAlignCenter(Element target) | Scroll to element (align center) |
+
+- __Webdriver quit__
+
+| API | Description |
+| --- | ----------- |
 | quitAndCloseBrowser() | Call driver.quit() to close browser |
+
+- __LoggingPrefs-related operations__
+
+| API | Description |
+| --- | ----------- |
 | getRequestUrlFromLoggingPrefs(String... keywords) | Search for request urls according to keywords. Only works for Chrome driver with loggingPrefs enabled |
 | enableSaveCookieFromLoggingPrefs(boolean enabled) | Save cookie in Operation instance. Only works for Chrome driver with loggingPrefs enabled |
 | saveSpecialHeader(String headerName) | Save specific header in Operation instance. Only works for Chrome driver with loggingPrefs enabled |
+
+- __Thread.sleep__
+
+| API | Description |
+| --- | ----------- |
 | sleep(long millis) | Sleep for millis |
+
+- __WebDriver screenshot__
+
+| API | Description |
+| --- | ----------- |
 | screenshot() | Screenshot |
 | screenshotAndEmbedInCucumberReport(Scenario scenario) | Screenshot and embed in Cucumber report |
 
@@ -419,7 +506,6 @@ public class LoginPage extends Basepage {
 
 | API | Description |
 | --- | ----------- |
-| JunitReportTool.modifyJunitReportClassName(Path junitReportFilePath, String origClassName, String newClassName) | <p>(usage 1)</p>the default junit report class (display) name would be the full package name of the test case. e.g. com.yourcompany.automation.projectname.testclassname. the name maybe too long or maybe you want a more simple and expressive name</p><p>(usage 2)</p><p>the default junit report class (display) name of a cucumber test would be the feature name. but if you have 2 cucumber runners share the same feature file, the report class name would be the same</p><p>use this method to modify junit report class name</p> |
 | NumberTool.findIntFromString(String str) | Find integer from string |
 | NumberTool.parseIntFromString(String str) | Parse integer from string |
 | StringTool.replaceTextInFile(Path filePath, String toBeReplaced, String replaceWith) | Replace specific text the a file |
