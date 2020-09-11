@@ -93,7 +93,7 @@ public class Operation {
         else {
             actions.moveToElement(element).build().perform();
         }
-        sleep(1500);
+        sleep(300);
     }
 
     protected void moveMouseToElement(WebElement element, int xOffset, int yOffset) {
@@ -105,7 +105,7 @@ public class Operation {
         else {
             actions.moveToElement(element, xOffset, yOffset).build().perform();
         }
-        sleep(500);
+        sleep(300);
     }
 
     /*
@@ -344,6 +344,8 @@ public class Operation {
          */
         WebElement targetElement = targetElementWait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath(target.getXpath())));
+
+        scrollToElementAlignCenter(target);
 
         /*
         step 2-1:
