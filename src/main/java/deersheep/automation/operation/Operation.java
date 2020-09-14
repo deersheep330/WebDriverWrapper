@@ -383,15 +383,6 @@ public class Operation {
          */
         else {
 
-            Wait<WebDriver> waitForElementWait = new FluentWait<WebDriver>(driver) {
-                @Override
-                protected RuntimeException timeoutException(String Message, Throwable lastException) {
-                    throw new RuntimeException("Click " + target.getName() + " and Wait for " + waitFor.getName() + " Fail! " + Message);
-                }
-            }.withTimeout(Duration.ofSeconds(waitForElementWaitTimeoutInSec))
-                    .pollingEvery(Duration.ofMillis(pollingIntervalInMillis))
-                    .ignoring(Exception.class);
-
             boolean success = false;
             long retry = 0;
             do {
@@ -417,6 +408,15 @@ public class Operation {
                         default:
                             throw new RuntimeException("Unsupported Click Type: " + clickType);
                     }
+
+                    Wait<WebDriver> waitForElementWait = new FluentWait<WebDriver>(driver) {
+                        @Override
+                        protected RuntimeException timeoutException(String Message, Throwable lastException) {
+                            throw new RuntimeException("Click " + target.getName() + " and Wait for " + waitFor.getName() + " Fail! " + Message);
+                        }
+                    }.withTimeout(Duration.ofSeconds(waitForElementWaitTimeoutInSec))
+                            .pollingEvery(Duration.ofMillis(pollingIntervalInMillis))
+                            .ignoring(Exception.class);
 
                     waitForElementWait.until(
                             ExpectedConditions.visibilityOfElementLocated(By.xpath(waitFor.getXpath())));
