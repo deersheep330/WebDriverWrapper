@@ -56,11 +56,11 @@ public class Operation {
         else return false;
     }
 
-    protected void setTargetElementWaitTimeoutInSec(long sec) {
+    public void setTargetElementWaitTimeoutInSec(long sec) {
         this.defaultTargetElementWaitTimeoutInSec = sec;
     }
 
-    protected void setWaitForElementWaitTimeoutInSec(long sec) {
+    public void setWaitForElementWaitTimeoutInSec(long sec) {
         this.defaultWaitForElementWaitTimeoutInSec = sec;
     }
 
