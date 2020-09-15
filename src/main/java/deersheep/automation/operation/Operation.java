@@ -336,23 +336,24 @@ public class Operation {
                 .pollingEvery(Duration.ofMillis(pollingIntervalInMillis))
                 .ignoring(Exception.class);
 
-        /*
-        step 1-2:
-        when we say we "find" the target element
-        it means "target" element is present on the DOM of the page
-        and the width and height are greater than 0
-         */
-        WebElement targetElement = targetElementWait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath(target.getXpath())));
-
-        scrollToElementAlignCenter(target);
-
-        /*
-        step 2-1:
-        if no need to wait for the other element
-        just click target and return
-         */
         if (waitFor == null) {
+
+            /*
+            step 1-2:
+            when we say we "find" the target element
+            it means "target" element is present on the DOM of the page
+            and the width and height are greater than 0
+            */
+            WebElement targetElement = targetElementWait.until(
+                    ExpectedConditions.visibilityOfElementLocated(By.xpath(target.getXpath())));
+
+            scrollToElementAlignCenter(target);
+
+            /*
+            step 2-1:
+            if no need to wait for the other element
+            just click target and return
+            */
             switch (clickType) {
                 case CLICK:
                     if (xOffset != 0 || yOffset != 0) simpleClickWithOffset(targetElement, xOffset, yOffset);
@@ -374,20 +375,33 @@ public class Operation {
                     throw new RuntimeException("Unsupported Click Type: " + clickType);
             }
         }
-        /*
-        step 2-2:
-        if need to wait for the other element
-        click target and wait for "waitFor" element
-        if "waitFor" element not found after timeout
-        click target again (retry)
-         */
         else {
 
             boolean success = false;
             long retry = 0;
             do {
                 try {
+
+                    /*
+                    step 1-2:
+                    when we say we "find" the target element
+                    it means "target" element is present on the DOM of the page
+                    and the width and height are greater than 0
+                    */
+                    WebElement targetElement = targetElementWait.until(
+                            ExpectedConditions.visibilityOfElementLocated(By.xpath(target.getXpath())));
+
+                    scrollToElementAlignCenter(target);
+
                     sleep(1000);
+
+                    /*
+                    step 2-2:
+                    if need to wait for the other element
+                    click target and wait for "waitFor" element
+                    if "waitFor" element not found after timeout
+                    click target again (retry)
+                    */
                     switch (clickType) {
                         case CLICK:
                             if (xOffset != 0 || yOffset != 0) simpleClickWithOffset(targetElement, xOffset, yOffset);
