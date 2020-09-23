@@ -670,6 +670,10 @@ public class Operation {
         defaultTabHandle = driver.getWindowHandle();
     }
 
+    public String getCurrentTabHandle() {
+        return driver.getWindowHandle();
+    }
+
     public String getDefaultTabHandle() {
         return defaultTabHandle;
     }
