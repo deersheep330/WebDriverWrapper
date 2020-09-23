@@ -32,7 +32,62 @@ public class LoggingPrefs {
         this.storedHeadersPairs = new HashMap<>();
     }
 
-    public String getRequestUrl(String... keywords) {
+    public Map<String, Object> getResponseFromRequestUrlKeywords(int timeoutInSec, String... keywords) {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        /*
+        sometimes the request has been sent but it's not been logged yet
+        so try again
+         */
+        int retry = 0, sleepTime = 3000, maxRetry = timeoutInSec * 1000 / sleepTime;
+        while (retry++ < maxRetry) {
+
+            List<LogEntry> list = driver.manage().logs().get(LogType.PERFORMANCE).getAll();
+
+            for (int i = list.size() - 1; i >= 0; i--) {
+
+                if (list.get(i).getMessage().contains("Network.responseReceived")) {
+                    try {
+
+                        Map<String, Object> root = mapper.readValue(list.get(i).getMessage(), Map.class);
+                        Map<String, Object> message = (Map<String, Object>) root.get("message");
+                        Map<String, Object> params = (Map<String, Object>) message.get("params");
+                        Map<String, Object> response = (Map<String, Object>) params.get("response");
+
+                        String url = (String) response.get("url");
+                        boolean matched = true;
+                        System.out.println(url);
+                        for (String str : keywords) {
+                            if (!url.contains(str)) {
+                                matched = false;
+                                break;
+                            }
+                        }
+
+                        if (matched) {
+                            return response;
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            try {
+                Thread.sleep(sleepTime);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        throw new RuntimeException("Unable to find request url with keywords: " + keywords);
+
+    }
+
+    public String searchForRequestUrlFromKeywords(String... keywords) {
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -108,7 +163,7 @@ public class LoggingPrefs {
             }
         }
 
-        throw new RuntimeException("Unable to find Url with keywords: " + keywords);
+        throw new RuntimeException("Unable to find request url with keywords: " + keywords);
 
     }
 
