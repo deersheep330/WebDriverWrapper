@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.Wait;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Operation {
@@ -708,9 +709,14 @@ public class Operation {
     logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
     capabilities.setCapability("goog:loggingPrefs", logPrefs);
      */
-    public String getRequestUrlFromLoggingPrefs(String... keywords) {
+    public String searchForRequestUrlFromLoggingPrefs(String... keywords) {
         if (loggingPrefs == null) throw new RuntimeException("capability goog:loggingPrefs should be enabled");
-        return loggingPrefs.getRequestUrl(keywords);
+        return loggingPrefs.searchForRequestUrlFromKeywords(keywords);
+    }
+
+    public Map<String, Object> getResponseFromLoggingPrefs(int timeoutInSec, String... keywords) {
+        if (loggingPrefs == null) throw new RuntimeException("capability goog:loggingPrefs should be enabled");
+        return loggingPrefs.getResponseFromRequestUrlKeywords(timeoutInSec, keywords);
     }
 
     public void enableSaveCookieFromLoggingPrefs(boolean enabled) {

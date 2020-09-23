@@ -476,7 +476,8 @@ public class LoginPage extends Basepage {
 
 | API | Description |
 | --- | ----------- |
-| getRequestUrlFromLoggingPrefs | Search for request urls according to keywords. Only works for Chrome driver with loggingPrefs enabled |
+| getResponseFromLoggingPrefs | get response of a specific request url according to keywords. Only works for Chrome driver with loggingPrefs enabled |
+| searchForRequestUrlFromLoggingPrefs | Search for request url according to keywords. Only works for Chrome driver with loggingPrefs enabled |
 | enableSaveCookieFromLoggingPrefs | Save cookie in Operation instance. Only works for Chrome driver with loggingPrefs enabled |
 | saveSpecialHeader | Save specific header in Operation instance. Only works for Chrome driver with loggingPrefs enabled |
 
