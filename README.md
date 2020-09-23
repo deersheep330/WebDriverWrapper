@@ -398,6 +398,10 @@ public class LoginPage extends Basepage {
 | clickWithOffsetAndWait | Click "target" element with offset and wait for "waitFor" element |
 | clickAndWait | Click "target" element and wait for "waitFor" element with customized timeout |
 | clickWithOffsetAndWait | Click "target" element with offset and wait for "waitFor" element with customized timeout |
+| clickAndWaitUntilDisappear | Click "target" element and wait for "waitFor" element disappearing |
+| clickWithOffsetAndWaitUntilDisappear | Click "target" element with offset and wait for "waitFor" element disappearing |
+| clickAndWaitUntilDisappear | Click "target" element and wait for "waitFor" element disappearing with customized timeout |
+| clickWithOffsetAndWaitUntilDisappear | Click "target" element with offset and wait for "waitFor" element disappearing with customized timeout |
 
 - __Check for existence__
 
@@ -502,11 +506,23 @@ public class LoginPage extends Basepage {
 
 #### Utility Tools
 
+- __Number-related functions__
+
 | API | Description |
 | --- | ----------- |
 | NumberTool.findIntFromString | Find integer from string |
 | NumberTool.parseIntFromString | Parse integer from string |
-| StringTool.replaceTextInFile | Replace specific text the a file |
+
+- __String-related functions__
+
+| API | Description |
+| --- | ----------- |
+| StringTool.replaceTextInFile | Replace all specific text in a file |
+
+- __XLSX-related functions__
+
+| API | Description |
+| --- | ----------- |
 | XlsxTool.getWorkbookFromHttpURLConnection | Get Xlsx Workbook from HttpUrlConnection |
 | XlsxTool.getDefaultSheetFromWorkbook | Get default sheet from workbook |
 | XlsxTool.getRowCountOfSheet | Get row count of sheet |
