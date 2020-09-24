@@ -58,13 +58,21 @@ public class Operation {
         else return false;
     }
 
-    public void setTargetElementWaitTimeoutInSec(long sec) {
+    public void setDefaultTargetElementWaitTimeoutInSec(long sec) {
         this.defaultTargetElementWaitTimeoutInSec = sec;
     }
 
-    public void setWaitForElementWaitTimeoutInSec(long sec) {
+    public void setDefaultWaitForElementWaitTimeoutInSec(long sec) {
         this.defaultWaitForElementWaitTimeoutInSec = sec;
     }
+
+    public void setClickMaxRetry(long maxRetry) { this.clickMaxRetry = maxRetry; }
+
+    public long getDefaultTargetElementWaitTimeoutInSec() { return this.defaultTargetElementWaitTimeoutInSec; }
+
+    public long getDefaultWaitForElementWaitTimeoutInSec() { return this.defaultWaitForElementWaitTimeoutInSec; }
+
+    public long getClickMaxRetry() { return this.clickMaxRetry; }
 
     protected void simpleClick(WebElement element) {
         actions.click(element).build().perform();
@@ -146,16 +154,16 @@ public class Operation {
     click and hold "target" element and wait for "waitFor" element
     customize timeout
     */
-    public void clickAndHoldAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
-        _clickWithOffsetAndWait(target, 0, 0, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK_AND_HOLD, WaitType.PRESENT);
+    public void clickAndHoldAndWait(Element target, Element waitFor, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, defaultTargetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK_AND_HOLD, WaitType.PRESENT);
     }
 
     /*
     click and hold "target" element with offset and wait for "waitFor" element
     customize timeout
     */
-    public void clickAndHoldWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
-        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK_AND_HOLD, WaitType.PRESENT);
+    public void clickAndHoldWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, defaultTargetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK_AND_HOLD, WaitType.PRESENT);
     }
 
     /*
@@ -201,16 +209,16 @@ public class Operation {
     hover "target" element and wait for "waitFor" element
     customize timeout
     */
-    public void hoverAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
-        _clickWithOffsetAndWait(target, 0, 0, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.HOVER, WaitType.PRESENT);
+    public void hoverAndWait(Element target, Element waitFor, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, defaultTargetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.HOVER, WaitType.PRESENT);
     }
 
     /*
     hover "target" element with offset and wait for "waitFor" element
     customize timeout
     */
-    public void hoverWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
-        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.HOVER, WaitType.PRESENT);
+    public void hoverWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, defaultTargetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.HOVER, WaitType.PRESENT);
     }
 
     /*
@@ -249,16 +257,16 @@ public class Operation {
     right click "target" element and wait for "waitFor" element
     customize timeout
     */
-    public void contextClickAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
-        _clickWithOffsetAndWait(target, 0, 0, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CONTEXT_CLICK, WaitType.PRESENT);
+    public void contextClickAndWait(Element target, Element waitFor, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, defaultTargetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CONTEXT_CLICK, WaitType.PRESENT);
     }
 
     /*
     right click "target" element with offset and wait for "waitFor" element
     customize timeout
     */
-    public void contextClickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
-        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CONTEXT_CLICK, WaitType.PRESENT);
+    public void contextClickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, defaultTargetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CONTEXT_CLICK, WaitType.PRESENT);
     }
 
     /*
@@ -322,32 +330,32 @@ public class Operation {
     click "target" element and wait for "waitFor" element
     customize timeout
     */
-    public void clickAndWait(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
-        _clickWithOffsetAndWait(target, 0, 0, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK, WaitType.PRESENT);
+    public void clickAndWait(Element target, Element waitFor, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, defaultTargetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK, WaitType.PRESENT);
     }
 
     /*
     click "target" element and wait for "waitFor" element disappearing
     customize timeout
     */
-    public void clickAndWaitUntilDisappear(Element target, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
-        _clickWithOffsetAndWait(target, 0, 0, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK, WaitType.DISAPPEAR);
+    public void clickAndWaitUntilDisappear(Element target, Element waitFor, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, 0, 0, waitFor, defaultTargetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK, WaitType.DISAPPEAR);
     }
 
     /*
     click "target" element with offset and wait for "waitFor" element
     customize timeout
     */
-    public void clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
-        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK, WaitType.PRESENT);
+    public void clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, defaultTargetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK, WaitType.PRESENT);
     }
 
     /*
     click "target" element with offset and wait for "waitFor" element disappearing
     customize timeout
     */
-    public void clickWithOffsetAndWaitUntilDisappear(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec) {
-        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, targetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK, WaitType.DISAPPEAR);
+    public void clickWithOffsetAndWaitUntilDisappear(Element target, int xOffset, int yOffset, Element waitFor, long waitForElementWaitTimeoutInSec) {
+        _clickWithOffsetAndWait(target, xOffset, yOffset, waitFor, defaultTargetElementWaitTimeoutInSec, waitForElementWaitTimeoutInSec, ClickType.CLICK, WaitType.DISAPPEAR);
     }
 
     protected void _clickWithOffsetAndWait(Element target, int xOffset, int yOffset, Element waitFor, long targetElementWaitTimeoutInSec, long waitForElementWaitTimeoutInSec, ClickType clickType, WaitType waitType) throws RuntimeException {
