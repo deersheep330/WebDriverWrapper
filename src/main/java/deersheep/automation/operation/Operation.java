@@ -492,7 +492,12 @@ public class Operation {
             } while (!success && ++retry < clickMaxRetry);
 
             if (!success) {
-                throw new RuntimeException("Click " + target.getName() + " and wait for " + waitFor.getName() + " fail after timeout " + clickMaxRetry * waitForElementWaitTimeoutInSec + " s");
+                if (waitType == WaitType.PRESENT) {
+                    throw new RuntimeException("Click " + target.getName() + " and wait for " + waitFor.getName() + " fail after timeout " + clickMaxRetry * waitForElementWaitTimeoutInSec + " s");
+                }
+                else {
+                    throw new RuntimeException("Click " + target.getName() + " and wait for " + waitFor.getName() + " disappearing fail after timeout " + clickMaxRetry * waitForElementWaitTimeoutInSec + " s");
+                }
             }
         }
     }
