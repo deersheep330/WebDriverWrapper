@@ -21,6 +21,8 @@ public class LoggingPrefs {
     protected Set<String> storedHeaderNames;
     protected Map<String, String> storedHeadersPairs;
 
+    protected int readPtr = 0;
+
     public LoggingPrefs(WebDriver driver) {
         Capabilities capabilities = ((HasCapabilities) driver).getCapabilities();
         if (capabilities.getCapability("goog:loggingPrefs") == null) {
@@ -30,6 +32,11 @@ public class LoggingPrefs {
         this.driver = driver;
         this.storedHeaderNames = new HashSet<>();
         this.storedHeadersPairs = new HashMap<>();
+    }
+
+    public void reset() {
+        List<LogEntry> list = driver.manage().logs().get(LogType.PERFORMANCE).getAll();
+        readPtr = (list.size() > 0) ? list.size() - 1 : 0;
     }
 
     public Map<String, Object> getResponseFromRequestUrlKeywords(int timeoutInSec, String... keywords) {
@@ -45,7 +52,7 @@ public class LoggingPrefs {
 
             List<LogEntry> list = driver.manage().logs().get(LogType.PERFORMANCE).getAll();
 
-            for (int i = list.size() - 1; i >= 0; i--) {
+            for (int i = list.size() - 1; i >= readPtr; i--) {
 
                 if (list.get(i).getMessage().contains("Network.responseReceived")) {
                     try {
@@ -100,7 +107,7 @@ public class LoggingPrefs {
 
             List<LogEntry> list = driver.manage().logs().get(LogType.PERFORMANCE).getAll();
 
-            for (int i = list.size() - 1; i >= 0; i--) {
+            for (int i = list.size() - 1; i >= readPtr; i--) {
 
                 if (list.get(i).getMessage().contains("Network.requestWillBeSentExtraInfo")) {
                     try {

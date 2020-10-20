@@ -736,6 +736,11 @@ public class Operation {
         return loggingPrefs.getResponseFromRequestUrlKeywords(timeoutInSec, keywords);
     }
 
+    public void resetLoggingPrefs() {
+        if (loggingPrefs == null) throw new RuntimeException("capability goog:loggingPrefs should be enabled");
+        loggingPrefs.reset();
+    }
+
     public void enableSaveCookieFromLoggingPrefs(boolean enabled) {
         if (loggingPrefs == null) throw new RuntimeException("capability goog:loggingPrefs should be enabled");
         loggingPrefs.enableSaveCookie(enabled);

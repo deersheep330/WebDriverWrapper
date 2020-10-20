@@ -12,7 +12,6 @@ __WebDriverWrapper is a Selenium Webdriver Wrapper helps to build robust & adapt
 - [Basic Examples](#basic-examples)
 - [Detailed API Docs](#detailed-api-docs)
 - [Demo Projects](#demo-projects)
-- [License](#license)
 
 ## Getting Started
 
@@ -476,8 +475,9 @@ public class LoginPage extends Basepage {
 
 | API | Description |
 | --- | ----------- |
-| getResponseFromLoggingPrefs | get response of a specific request url according to keywords. Only works for Chrome driver with loggingPrefs enabled |
+| getResponseFromLoggingPrefs | Get response of a specific request url according to keywords. Only works for Chrome driver with loggingPrefs enabled |
 | searchForRequestUrlFromLoggingPrefs | Search for request url according to keywords. Only works for Chrome driver with loggingPrefs enabled |
+| resetLoggingPrefs | Reset loggingPrefs. All old logs would be discard. |
 | enableSaveCookieFromLoggingPrefs | Save cookie in Operation instance. Only works for Chrome driver with loggingPrefs enabled |
 | saveSpecialHeader | Save specific header in Operation instance. Only works for Chrome driver with loggingPrefs enabled |
 
