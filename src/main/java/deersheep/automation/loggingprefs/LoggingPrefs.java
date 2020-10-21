@@ -21,8 +21,6 @@ public class LoggingPrefs {
     protected Set<String> storedHeaderNames;
     protected Map<String, String> storedHeadersPairs;
 
-    protected int readPtr = 0;
-
     public LoggingPrefs(WebDriver driver) {
         Capabilities capabilities = ((HasCapabilities) driver).getCapabilities();
         if (false && capabilities.getCapability("goog:loggingPrefs") == null) {
@@ -36,8 +34,7 @@ public class LoggingPrefs {
 
     public void reset() {
         List<LogEntry> list = driver.manage().logs().get(LogType.PERFORMANCE).getAll();
-        readPtr = (list.size() > 0) ? list.size() - 1 : 0;
-        System.out.println("update readPtr to " + readPtr);
+        System.out.println("reset logs: " + list.size() + " -> " + driver.manage().logs().get(LogType.PERFORMANCE).getAll().size());
     }
 
     public Map<String, Object> getResponseFromRequestUrlKeywords(int timeoutInSec, String... keywords) {
@@ -53,9 +50,9 @@ public class LoggingPrefs {
 
             List<LogEntry> list = driver.manage().logs().get(LogType.PERFORMANCE).getAll();
 
-            System.out.println("total logs count = " + list.size() + ", readPtr = " + readPtr);
+            System.out.println("total logs count = " + list.size());
 
-            for (int i = list.size() - 1; i >= readPtr; i--) {
+            for (int i = list.size() - 1; i >= 0; i--) {
 
                 if (list.get(i).getMessage().contains("Network.responseReceived")) {
                     try {
@@ -109,9 +106,9 @@ public class LoggingPrefs {
 
             List<LogEntry> list = driver.manage().logs().get(LogType.PERFORMANCE).getAll();
 
-            System.out.println("total logs count = " + list.size() + ", readPtr = " + readPtr);
+            System.out.println("total logs count = " + list.size());
 
-            for (int i = list.size() - 1; i >= readPtr; i--) {
+            for (int i = list.size() - 1; i >= 0; i--) {
 
                 if (list.get(i).getMessage().contains("Network.requestWillBeSentExtraInfo")) {
                     try {
@@ -175,6 +172,37 @@ public class LoggingPrefs {
         }
 
         throw new RuntimeException("Unable to find request url with keywords: " + Arrays.toString(keywords));
+
+    }
+
+    public List<String> getAllRequestUrls() {
+
+        List<String> res = new ArrayList<>();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        List<LogEntry> list = driver.manage().logs().get(LogType.PERFORMANCE).getAll();
+        System.out.println("total logs count = " + list.size());
+
+        for (int i = list.size() - 1; i >= 0; i--) {
+
+            if (list.get(i).getMessage().contains("Network.responseReceived")) {
+                try {
+                    Map<String, Object> root = mapper.readValue(list.get(i).getMessage(), Map.class);
+                    Map<String, Object> message = (Map<String, Object>) root.get("message");
+                    Map<String, Object> params = (Map<String, Object>) message.get("params");
+                    Map<String, Object> response = (Map<String, Object>) params.get("response");
+
+                    String url = (String) response.get("url");
+                    res.add(url);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return res;
 
     }
 
