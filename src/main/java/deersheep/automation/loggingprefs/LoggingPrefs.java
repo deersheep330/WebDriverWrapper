@@ -25,7 +25,7 @@ public class LoggingPrefs {
 
     public LoggingPrefs(WebDriver driver) {
         Capabilities capabilities = ((HasCapabilities) driver).getCapabilities();
-        if (capabilities.getCapability("goog:loggingPrefs") == null) {
+        if (false && capabilities.getCapability("goog:loggingPrefs") == null) {
             throw new RuntimeException("capability goog:loggingPrefs should be enabled");
         }
 
