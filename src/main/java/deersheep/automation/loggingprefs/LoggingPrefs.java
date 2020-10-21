@@ -90,7 +90,7 @@ public class LoggingPrefs {
             }
         }
 
-        throw new RuntimeException("Unable to find request url with keywords: " + keywords);
+        throw new RuntimeException("Unable to find request url with keywords: " + Arrays.toString(keywords));
 
     }
 
@@ -170,7 +170,7 @@ public class LoggingPrefs {
             }
         }
 
-        throw new RuntimeException("Unable to find request url with keywords: " + keywords);
+        throw new RuntimeException("Unable to find request url with keywords: " + Arrays.toString(keywords));
 
     }
 
