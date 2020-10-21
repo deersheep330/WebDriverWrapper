@@ -726,9 +726,9 @@ public class Operation {
     logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
     capabilities.setCapability("goog:loggingPrefs", logPrefs);
      */
-    public String searchForRequestUrlFromLoggingPrefs(String... keywords) {
+    public String searchForRequestUrlFromLoggingPrefs(int timeoutInSec, String... keywords) {
         if (loggingPrefs == null) throw new RuntimeException("capability goog:loggingPrefs should be enabled");
-        return loggingPrefs.searchForRequestUrlFromKeywords(keywords);
+        return loggingPrefs.searchForRequestUrlFromKeywords(timeoutInSec, keywords);
     }
 
     public Map<String, Object> getResponseFromLoggingPrefs(int timeoutInSec, String... keywords) {

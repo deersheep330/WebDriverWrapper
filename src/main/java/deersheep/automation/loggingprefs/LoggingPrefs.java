@@ -96,7 +96,7 @@ public class LoggingPrefs {
 
     }
 
-    public String searchForRequestUrlFromKeywords(String... keywords) {
+    public String searchForRequestUrlFromKeywords(int timeoutInSec, String... keywords) {
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -104,10 +104,12 @@ public class LoggingPrefs {
         sometimes the request has been sent but it's not been logged yet
         so try again
          */
-        int retry = 0, maxRetry = 3;
+        int retry = 0, sleepTime = 3000, maxRetry = timeoutInSec * 1000 / sleepTime;
         while (retry++ < maxRetry) {
 
             List<LogEntry> list = driver.manage().logs().get(LogType.PERFORMANCE).getAll();
+
+            System.out.println("total logs count = " + list.size() + ", readPtr = " + readPtr);
 
             for (int i = list.size() - 1; i >= readPtr; i--) {
 
@@ -165,7 +167,7 @@ public class LoggingPrefs {
             }
 
             try {
-                Thread.sleep(1500);
+                Thread.sleep(sleepTime);
             }
             catch (InterruptedException e) {
                 e.printStackTrace();
