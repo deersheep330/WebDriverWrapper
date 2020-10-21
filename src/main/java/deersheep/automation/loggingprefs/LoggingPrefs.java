@@ -37,6 +37,7 @@ public class LoggingPrefs {
     public void reset() {
         List<LogEntry> list = driver.manage().logs().get(LogType.PERFORMANCE).getAll();
         readPtr = (list.size() > 0) ? list.size() - 1 : 0;
+        System.out.println("update readPtr to " + readPtr);
     }
 
     public Map<String, Object> getResponseFromRequestUrlKeywords(int timeoutInSec, String... keywords) {
@@ -52,11 +53,12 @@ public class LoggingPrefs {
 
             List<LogEntry> list = driver.manage().logs().get(LogType.PERFORMANCE).getAll();
 
+            System.out.println("total logs count = " + list.size() + ", readPtr = " + readPtr);
+
             for (int i = list.size() - 1; i >= readPtr; i--) {
 
                 if (list.get(i).getMessage().contains("Network.responseReceived")) {
                     try {
-
                         Map<String, Object> root = mapper.readValue(list.get(i).getMessage(), Map.class);
                         Map<String, Object> message = (Map<String, Object>) root.get("message");
                         Map<String, Object> params = (Map<String, Object>) message.get("params");
