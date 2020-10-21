@@ -193,8 +193,10 @@ public class LoggingPrefs {
                     Map<String, Object> params = (Map<String, Object>) message.get("params");
                     Map<String, Object> response = (Map<String, Object>) params.get("response");
 
-                    String url = (String) response.get("url");
-                    res.add(url);
+                    if (response != null) {
+                        String url = (String) response.get("url");
+                        res.add(url);
+                    }
                 }
                 catch (Exception e) {
                     e.printStackTrace();
