@@ -45,7 +45,7 @@ public class Operation {
         this.js = (JavascriptExecutor) this.driver;
         this.capabilities = ((HasCapabilities) this.driver).getCapabilities();
 
-        if (this.capabilities.getCapability("goog:loggingPrefs") == null) {
+        if (false && this.capabilities.getCapability("goog:loggingPrefs") == null) {
             this.loggingPrefs = null;
         }
         else {
