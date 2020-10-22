@@ -186,6 +186,8 @@ public class LoggingPrefs {
 
         for (int i = list.size() - 1; i >= 0; i--) {
 
+            System.out.println(list.get(i).getMessage());
+
             if (list.get(i).getMessage().contains("Network.responseReceived")) {
                 try {
                     Map<String, Object> root = mapper.readValue(list.get(i).getMessage(), Map.class);
