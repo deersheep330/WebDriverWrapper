@@ -188,15 +188,15 @@ public class LoggingPrefs {
 
             System.out.println(list.get(i).getMessage());
 
-            if (list.get(i).getMessage().contains("Network.responseReceived")) {
+            if (list.get(i).getMessage().contains("\"Network.requestWillBeSent\"")) {
                 try {
                     Map<String, Object> root = mapper.readValue(list.get(i).getMessage(), Map.class);
                     Map<String, Object> message = (Map<String, Object>) root.get("message");
                     Map<String, Object> params = (Map<String, Object>) message.get("params");
-                    Map<String, Object> response = (Map<String, Object>) params.get("response");
+                    Map<String, Object> request = (Map<String, Object>) params.get("request");
 
-                    if (response != null) {
-                        String url = (String) response.get("url");
+                    if (request != null) {
+                        String url = (String) request.get("url");
                         res.add(url);
                     }
                 }
