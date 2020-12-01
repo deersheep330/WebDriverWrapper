@@ -608,12 +608,24 @@ public class Operation {
             element.sendKeys(text);
         }
         else {
+            // IE send keys too slow, so it's possible parts of text are missing
+            // keep retry...
+            long count = 0;
+            do {
+                click(target);
+                WebElement element = findElement(target);
+                element.clear();
+                element.sendKeys(text);
+                count++;
+            } while(!findElement(target).getAttribute("value").equals(text) && (count < 65535));
+            /*
             click(target);
             WebElement element = findElement(target);
             element.sendKeys("dummy");
             sleep(1000);
             js.executeScript("arguments[0].innerHTML=arguments[1]", element, text);
             sleep(1000);
+             */
         }
     }
 
