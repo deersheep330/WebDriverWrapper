@@ -721,11 +721,13 @@ public class Operation {
     }
 
     public void scrollToElement(Element target) {
-        js.executeScript("arguments[0].scrollIntoView();", findElement(target));
+        if (isIE()) System.out.println("[Warning] scrollIntoView not support in IE");
+        else js.executeScript("arguments[0].scrollIntoView();", findElement(target));
     }
 
     public void scrollToElementAlignCenter(Element target) {
-        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", findElement(target));
+        if (isIE()) System.out.println("[Warning] scrollIntoView not support in IE");
+        else js.executeScript("arguments[0].scrollIntoView({block: 'center'});", findElement(target));
     }
 
     public void quitAndCloseBrowser() {
