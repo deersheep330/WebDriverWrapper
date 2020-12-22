@@ -228,7 +228,7 @@ public class LoggingPrefs {
 
                     if (response != null) {
                         String url = (String) response.get("url");
-                        String status = (String) response.get("status");
+                        String status = response.get("status").toString();
                         if (url != null && !url.equals("")) {
                             res.add(new HashMap<String, String>() {{
                                 put("url", url);
