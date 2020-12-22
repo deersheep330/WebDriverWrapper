@@ -230,7 +230,7 @@ public class LoggingPrefs {
                         String url = (String) response.get("url");
                         String status = (String) response.get("status");
                         if (url != null && !url.equals("")) {
-                            res.add(new HashMap<>() {{
+                            res.add(new HashMap<String, String>() {{
                                 put("url", url);
                                 put("status", status);
                             }});
