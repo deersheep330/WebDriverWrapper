@@ -755,7 +755,7 @@ public class Operation {
         return loggingPrefs.getAllRequestUrls();
     }
 
-    public List<String> getAllResponseUrlsFromLoggingPrefs() {
+    public List<Map<String, String>> getAllResponseUrlsFromLoggingPrefs() {
         if (loggingPrefs == null) throw new RuntimeException("capability goog:loggingPrefs should be enabled");
         return loggingPrefs.getAllResponseUrls();
     }

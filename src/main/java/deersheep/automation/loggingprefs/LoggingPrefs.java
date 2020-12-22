@@ -207,9 +207,9 @@ public class LoggingPrefs {
 
     }
 
-    public List<String> getAllResponseUrls() {
+    public List<Map<String, String>> getAllResponseUrls() {
 
-        List<String> res = new ArrayList<>();
+        List<Map<String, String>> res = new ArrayList<>();
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -228,7 +228,13 @@ public class LoggingPrefs {
 
                     if (response != null) {
                         String url = (String) response.get("url");
-                        res.add(url);
+                        String status = (String) response.get("status");
+                        if (url != null && !url.equals("")) {
+                            res.add(new HashMap<>() {{
+                                put("url", url);
+                                put("status", status);
+                            }});
+                        }
                     }
                 }
                 catch (Exception e) {
