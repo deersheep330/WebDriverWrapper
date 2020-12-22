@@ -207,6 +207,40 @@ public class LoggingPrefs {
 
     }
 
+    public List<String> getAllResponseUrls() {
+
+        List<String> res = new ArrayList<>();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        List<LogEntry> list = driver.manage().logs().get(LogType.PERFORMANCE).getAll();
+        System.out.println("total logs count = " + list.size());
+
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (list.get(i).getMessage().contains("Network.responseReceived")) {
+                try {
+                    Map<String, Object> root = mapper.readValue(list.get(i).getMessage(), Map.class);
+                    Map<String, Object> message = (Map<String, Object>) root.get("message");
+                    Map<String, Object> params = (Map<String, Object>) message.get("params");
+                    Map<String, Object> response = (Map<String, Object>) params.get("response");
+
+                    System.out.println(response);
+
+                    if (response != null) {
+                        String url = (String) response.get("url");
+                        res.add(url);
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return res;
+
+    }
+
     public void enableSaveCookie(boolean enabled) {
         saveCookieEnabled = enabled;
     }
