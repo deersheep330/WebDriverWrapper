@@ -224,7 +224,7 @@ public class LoggingPrefs {
                     Map<String, Object> params = (Map<String, Object>) message.get("params");
                     Map<String, Object> response = (Map<String, Object>) params.get("response");
 
-                    System.out.println(response);
+                    //System.out.println(response);
 
                     if (response != null) {
                         String url = (String) response.get("url");
