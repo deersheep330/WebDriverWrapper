@@ -33,7 +33,7 @@ public class Operation {
     protected long defaultTargetElementWaitTimeoutInSec = 8;
     protected long defaultWaitForElementWaitTimeoutInSec = 8;
 
-    protected long pollingIntervalInMillis = 500;
+    protected long pollingIntervalInMillis = 250;
 
     protected long clickMaxRetry = 3;
 
@@ -433,7 +433,7 @@ public class Operation {
 
                     scrollToElementAlignCenter(target);
 
-                    sleep(1000);
+                    sleep(250);
 
                     /*
                     step 3-2:
