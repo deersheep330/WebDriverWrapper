@@ -691,6 +691,8 @@ public class Operation {
         driver.switchTo().window(defaultTabHandle);
     }
 
+    public String getCurrentUrl() { return driver.getCurrentUrl(); }
+
     public void saveCurrentTabAsDefaultTab() {
         defaultTabHandle = driver.getWindowHandle();
     }

@@ -438,6 +438,7 @@ public class LoginPage extends Basepage {
 | IsNewTabBeingOpened | Check if a new tab being opened |
 | switchToFirstNewlyOpenedTab | Switch to the first newly opened tab |
 | closeNewlyOpenedTabs | close newly opened tab |
+| getCurrentUrl | get current url |
 | getCurrentOpenedTabsCount | Get current opened tabs count |
 | getCurrentOpenedTabsSet | Get current opened tabs handles |
 | switchToTab | Switch to another tab according to handle |
