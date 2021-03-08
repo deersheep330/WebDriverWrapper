@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.lightbody.bmp.BrowserMobProxy;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.core.har.Har;
+import net.lightbody.bmp.core.har.HarContent;
 import net.lightbody.bmp.core.har.HarEntry;
+import net.lightbody.bmp.core.har.HarPostData;
 import net.lightbody.bmp.proxy.CaptureType;
 
 import java.io.IOException;
@@ -96,18 +98,23 @@ public class BrowserMobWrapper {
             for (HarEntry log : logs) {
                 for (String str : keywords) {
                     if (log.getRequest().getUrl().contains(str)) {
-                        String content = log.getResponse().getContent().getText();
-                        content = (content == null) ? "" : content;
+
+                        HarContent _content = log.getResponse().getContent();
+                        String content = (_content == null) ? "" : _content.getText();
                         content = (content.length() > 900) ? content.substring(0, 900) : content;
+
+                        HarPostData _postData = log.getRequest().getPostData();
+                        String postData = (_postData == null) ? "" : _postData.getText();
+
                         if (content.contains("progress\":") && content.contains("progress\":1")) {
                             res.add(new HarEntryWrapper(log.getRequest().getUrl(),
-                                                        log.getRequest().getPostData().getText(),
-                                                        log.getResponse().getContent().getText()));
+                                                        postData,
+                                                        content));
                         }
                         else if (!content.contains("progress\":")) {
                             res.add(new HarEntryWrapper(log.getRequest().getUrl(),
-                                                        log.getRequest().getPostData().getText(),
-                                                        log.getResponse().getContent().getText()));
+                                                        postData,
+                                                        content));
                         }
                         break;
                     }
