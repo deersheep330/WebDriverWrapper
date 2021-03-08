@@ -17,7 +17,7 @@ import java.util.List;
 
 public class BrowserMobWrapper {
 
-    protected BrowserMobProxy browserMobProxy = null;
+    protected static BrowserMobProxy browserMobProxy = null;
 
     protected HashMap<String, List<HarEntryWrapper>> entriesCollection = new HashMap<>();
 
