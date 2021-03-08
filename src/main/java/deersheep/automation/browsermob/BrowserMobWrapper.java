@@ -100,18 +100,22 @@ public class BrowserMobWrapper {
                 for (String str : keywords) {
                     if (log.getRequest().getUrl().contains(str)) {
 
+                        HarContent _contentForMatching = log.getResponse().getContent();
+                        String contentForMatching = (_contentForMatching == null) ? "" : _contentForMatching.getText();
+                        contentForMatching = (contentForMatching.length() > 900) ? contentForMatching.substring(0, 900) : contentForMatching;
+
                         HarContent _content = log.getResponse().getContent();
                         String content = (_content == null) ? "" : _content.getText();
 
                         HarPostData _postData = log.getRequest().getPostData();
                         String postData = (_postData == null) ? "" : _postData.getText();
 
-                        if (content.contains("progress\":") && content.contains("progress\":1")) {
+                        if (contentForMatching.contains("progress\":") && contentForMatching.contains("progress\":1")) {
                             res.add(new HarEntryWrapper(log.getRequest().getUrl(),
                                                         JsonTool.pretty(postData),
                                                         JsonTool.pretty(content)));
                         }
-                        else if (!content.contains("progress\":")) {
+                        else if (!contentForMatching.contains("progress\":")) {
                             res.add(new HarEntryWrapper(log.getRequest().getUrl(),
                                                         JsonTool.pretty(postData),
                                                         JsonTool.pretty(content)));
