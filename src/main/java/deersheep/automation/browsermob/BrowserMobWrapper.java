@@ -19,22 +19,20 @@ public class BrowserMobWrapper {
 
     protected static BrowserMobProxy browserMobProxy = null;
 
-    protected HashMap<String, List<HarEntryWrapper>> entriesCollection = new HashMap<>();
+    protected HashMap<String, HarEntryWrapper> entriesCollection = new HashMap<>();
 
-    protected String currentKey;
-
-    public void addToEntriesCollection(HarEntryWrapper entry) {
+    public void addToEntriesCollection(String key, HarEntryWrapper entry) {
 
         if (browserMobProxy == null) {
             return;
         }
-        else if (entriesCollection.containsKey(currentKey)) {
-            entriesCollection.get(currentKey).add(entry);
+        else if (entriesCollection.containsKey(key)) {
+            System.out.println("duplicated key:");
+            System.out.println(entriesCollection.get(key));
+            //entriesCollection.put(key, entry);
         }
         else {
-            ArrayList<HarEntryWrapper> list = new ArrayList<>();
-            list.add(entry);
-            entriesCollection.put(currentKey, list);
+            entriesCollection.put(key, entry);
         }
     }
 
@@ -76,25 +74,24 @@ public class BrowserMobWrapper {
         return browserMobProxy;
     }
 
-    public void startRecordingWithKey(String key) {
+    public void startNewRecording() {
 
         if (browserMobProxy == null) {
             return;
         }
         else {
-            currentKey = key;
             browserMobProxy.newHar();
         }
     }
 
-    public List<HarEntry> searchForKeywordsFromRecordedLogs(String... keywords) {
+    public List<HarEntryWrapper> searchForKeywordsFromRecordedLogs(String... keywords) {
         if (browserMobProxy != null) {
 
             Har har = browserMobProxy.getHar();
             List<HarEntry> logs = har.getLog().getEntries();
             System.out.println("log size = " + logs.size());
 
-            List<HarEntry> res = new ArrayList<>();
+            List<HarEntryWrapper> res = new ArrayList<>();
 
             for (HarEntry log : logs) {
                 for (String str : keywords) {
@@ -102,8 +99,16 @@ public class BrowserMobWrapper {
                         String content = log.getResponse().getContent().getText();
                         content = (content == null) ? "" : content;
                         content = (content.length() > 900) ? content.substring(0, 900) : content;
-                        if (content.contains("progress\":") && content.contains("progress\":1")) res.add(log);
-                        else if (!content.contains("progress\":")) res.add(log);
+                        if (content.contains("progress\":") && content.contains("progress\":1")) {
+                            res.add(new HarEntryWrapper(log.getRequest().getUrl(),
+                                                        log.getRequest().getPostData().getText(),
+                                                        log.getResponse().getContent().getText()));
+                        }
+                        else if (!content.contains("progress\":")) {
+                            res.add(new HarEntryWrapper(log.getRequest().getUrl(),
+                                                        log.getRequest().getPostData().getText(),
+                                                        log.getResponse().getContent().getText()));
+                        }
                         break;
                     }
                 }
@@ -112,6 +117,6 @@ public class BrowserMobWrapper {
             return res;
         }
 
-        return new ArrayList<HarEntry>();
+        return new ArrayList<HarEntryWrapper>();
     }
 }
