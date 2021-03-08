@@ -11,4 +11,9 @@ public class HarEntryWrapper {
         this.reqPostData = postData;
         this.respContent = content;
     }
+
+    @Override
+    public String toString() {
+        return String.format("{ url: %s, postData: %s, content: %s }", url, reqPostData, respContent);
+    }
 }
