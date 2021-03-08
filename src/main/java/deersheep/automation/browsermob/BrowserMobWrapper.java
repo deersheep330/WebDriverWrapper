@@ -21,7 +21,7 @@ public class BrowserMobWrapper {
 
     protected static BrowserMobProxy browserMobProxy = null;
 
-    protected HashMap<String, HarEntryWrapper> entriesCollection = new HashMap<>();
+    protected static HashMap<String, HarEntryWrapper> entriesCollection = new HashMap<>();
 
     public void addToEntriesCollection(String key, HarEntryWrapper entry) {
 
