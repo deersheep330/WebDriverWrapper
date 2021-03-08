@@ -422,6 +422,7 @@ public class LoginPage extends Basepage {
 | API | Description |
 | --- | ----------- |
 | sendText | Send text to InputBox or TextArea |
+| dragAndDropFile | Drag and drop a file into a FileArea |
 | selectDropdownMenuOptionByValue | Select dropdown menu option by value |
 
 - __WebDriver navigation or reload__

@@ -101,7 +101,7 @@ public class BrowserMobWrapper {
 
                         HarContent _content = log.getResponse().getContent();
                         String content = (_content == null) ? "" : _content.getText();
-                        content = (content.length() > 900) ? content.substring(0, 900) : content;
+                        content = (content.length() > 2048) ? content.substring(0, 2048) : content;
 
                         HarPostData _postData = log.getRequest().getPostData();
                         String postData = (_postData == null) ? "" : _postData.getText();

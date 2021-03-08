@@ -629,6 +629,10 @@ public class Operation {
         }
     }
 
+    public void dragAndDropFile(Element fileArea, String filePath) {
+        driver.findElement(By.xpath(fileArea.getXpath())).sendKeys(filePath);
+    }
+
     public void selectDropdownMenuOptionByValue(Element dropdown, String valueToBeSelected) {
         Select select = new Select(findElement(dropdown));
         select.selectByValue(valueToBeSelected);
