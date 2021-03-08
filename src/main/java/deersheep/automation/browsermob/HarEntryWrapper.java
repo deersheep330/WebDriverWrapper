@@ -1,5 +1,7 @@
 package deersheep.automation.browsermob;
 
+import deersheep.automation.utility.JsonTool;
+
 public class HarEntryWrapper {
 
     public String url;
@@ -14,6 +16,6 @@ public class HarEntryWrapper {
 
     @Override
     public String toString() {
-        return String.format("{ url: %s, postData: %s, content: %s }", url, reqPostData, respContent);
+        return JsonTool.pretty(String.format("{ url: %s, postData: %s, content: %s }", url, reqPostData, respContent));
     }
 }
