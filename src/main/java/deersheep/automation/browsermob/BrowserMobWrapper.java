@@ -24,59 +24,29 @@ public class BrowserMobWrapper {
 
     protected static BrowserMobProxy browserMobProxy = null;
 
-    protected static HashMap<String, HarEntryWrapper> entriesCollection = new HashMap<>();
+    protected static HashMap<String, HarEntryWrapper> entriesMap = new HashMap<>();
 
-    public void addToEntriesCollection(String key, HarEntryWrapper entry) {
+    public void addToEntriesMap(String key, HarEntryWrapper entry) {
 
         if (browserMobProxy == null) {
             return;
         }
-        else if (entriesCollection.containsKey(key)) {
-            System.out.println("duplicated key:");
-            System.out.println(entriesCollection.get(key));
-            //entriesCollection.put(key, entry);
+        else if (entriesMap.containsKey(key)) {
+            System.out.println("duplicated key: " + key);
+            //entriesMap.put(key, entry);
         }
         else {
-            entriesCollection.put(key, entry);
+            entriesMap.put(key, entry);
         }
     }
 
-    public void clearEntriesCollection() {
+    public void clearEntriesMap() {
         if (browserMobProxy == null) {
             return;
         }
         else {
-            entriesCollection.clear();
+            entriesMap.clear();
         }
-    }
-
-    public void writeEntriesCollectionToFile(String filename) {
-
-        if (browserMobProxy == null) return;
-
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            mapper.writeValue(Paths.get(filename).toFile(), entriesCollection);
-        } catch (JsonGenerationException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public HashMap<String, HarEntryWrapper> readEntriesCollectionFromFile(File file) {
-        HashMap<String, HarEntryWrapper> tempMap = new HashMap<>();
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            tempMap = mapper.readValue(file, new TypeReference<HashMap<String, HarEntryWrapper>>(){});
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            return tempMap;
-        }
-
     }
 
     public BrowserMobProxy initBrowserMobProxy() {
