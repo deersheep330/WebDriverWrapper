@@ -1,6 +1,7 @@
 package deersheep.automation.browsermob;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import deersheep.automation.utility.JsonTool;
@@ -12,6 +13,7 @@ import net.lightbody.bmp.core.har.HarEntry;
 import net.lightbody.bmp.core.har.HarPostData;
 import net.lightbody.bmp.proxy.CaptureType;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -64,6 +66,19 @@ public class BrowserMobWrapper {
         }
     }
 
+    public HashMap<String, HarEntryWrapper> readEntriesCollectionFromFile(File file) {
+        HashMap<String, HarEntryWrapper> tempMap = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            tempMap = mapper.readValue(file, new TypeReference<HashMap<String, HarEntryWrapper>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            return tempMap;
+        }
+
+    }
+
     public BrowserMobProxy initBrowserMobProxy() {
 
         if (browserMobProxy == null) {
@@ -112,13 +127,13 @@ public class BrowserMobWrapper {
 
                         if (contentForMatching.contains("progress\":") && contentForMatching.contains("progress\":1")) {
                             res.add(new HarEntryWrapper(log.getRequest().getUrl(),
-                                                        JsonTool.pretty(postData),
-                                                        JsonTool.pretty(content)));
+                                                        postData,
+                                                        content));
                         }
                         else if (!contentForMatching.contains("progress\":")) {
                             res.add(new HarEntryWrapper(log.getRequest().getUrl(),
-                                                        JsonTool.pretty(postData),
-                                                        JsonTool.pretty(content)));
+                                                        postData,
+                                                        content));
                         }
                         break;
                     }
