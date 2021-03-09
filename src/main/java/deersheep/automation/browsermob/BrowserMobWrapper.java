@@ -26,6 +26,10 @@ public class BrowserMobWrapper {
 
     protected static HashMap<String, HarEntryWrapper> entriesMap = new HashMap<>();
 
+    public static HashMap<String, HarEntryWrapper> getEntriesMap() {
+        return entriesMap;
+    }
+
     public void addToEntriesMap(String key, HarEntryWrapper entry) {
 
         if (browserMobProxy == null) {
