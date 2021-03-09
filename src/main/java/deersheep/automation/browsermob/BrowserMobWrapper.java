@@ -130,13 +130,13 @@ public class BrowserMobWrapper {
                         }
                         else if (contentForMatching.contains("progress\":") && contentForMatching.contains("progress\":1")) {
                             res.add(new HarEntryWrapper(log.getRequest().getUrl(),
-                                                        JsonTool.pretty(postData),
-                                                        JsonTool.pretty(content)));
+                                                        postData,
+                                                        content));
                         }
                         else if (!contentForMatching.contains("progress\":")) {
                             res.add(new HarEntryWrapper(log.getRequest().getUrl(),
-                                                        JsonTool.pretty(postData),
-                                                        JsonTool.pretty(content)));
+                                                        postData,
+                                                        content));
                         }
                         break;
                     }
