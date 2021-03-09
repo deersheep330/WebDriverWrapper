@@ -18,7 +18,7 @@ public class FileTool {
         return files[0];
     }
 
-    public static void writeMapToFile(String filePath, Map<String, String> map) {
+    public static void writeMapToFile(String filePath, Map<String, String> map, String delimiter) {
 
         File file = new File(filePath);
 
@@ -28,7 +28,7 @@ public class FileTool {
 
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 // put key and value separated by a colon
-                bf.write(entry.getKey() + ":" + entry.getValue());
+                bf.write(entry.getKey() + delimiter + entry.getValue());
                 // new line
                 bf.newLine();
             }
@@ -40,7 +40,7 @@ public class FileTool {
         }
     }
 
-    public static Map<String, String> readMapFromFile(String filePath) {
+    public static Map<String, String> readMapFromFile(String filePath, String delimiter) {
 
         Map<String, String> map = new HashMap<>();
         BufferedReader br;
@@ -53,7 +53,7 @@ public class FileTool {
             // read file line by line
             while ((line = br.readLine()) != null) {
                 // split the line by :
-                String[] parts = line.split(":");
+                String[] parts = line.split(delimiter);
                 // first part is key, second is value
                 String key = parts[0].trim();
                 String value = parts[1].trim();
