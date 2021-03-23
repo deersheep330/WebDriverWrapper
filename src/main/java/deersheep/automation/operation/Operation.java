@@ -33,7 +33,7 @@ public class Operation {
     protected long defaultTargetElementWaitTimeoutInSec = 8;
     protected long defaultWaitForElementWaitTimeoutInSec = 8;
 
-    protected long pollingIntervalInMillis = 250;
+    protected long pollingIntervalInMillis = 100;
 
     protected long clickMaxRetry = 3;
 
