@@ -61,18 +61,20 @@ public class LoggingPrefs {
                         Map<String, Object> params = (Map<String, Object>) message.get("params");
                         Map<String, Object> response = (Map<String, Object>) params.get("response");
 
-                        String url = (String) response.get("url");
-                        boolean matched = true;
-                        System.out.println(url);
-                        for (String str : keywords) {
-                            if (!url.contains(str)) {
-                                matched = false;
-                                break;
+                        if (response != null) {
+                            String url = (String) response.get("url");
+                            boolean matched = true;
+                            System.out.println(url);
+                            for (String str : keywords) {
+                                if (!url.contains(str)) {
+                                    matched = false;
+                                    break;
+                                }
                             }
-                        }
 
-                        if (matched) {
-                            return response;
+                            if (matched) {
+                                return response;
+                            }
                         }
                     }
                     catch (Exception e) {
@@ -143,18 +145,21 @@ public class LoggingPrefs {
                         Map<String, Object> params = (Map<String, Object>) message.get("params");
                         Map<String, Object> response = (Map<String, Object>) params.get("response");
 
-                        String url = (String) response.get("url");
-                        boolean matched = true;
-                        System.out.println(url);
-                        for (String str : keywords) {
-                            if (!url.contains(str)) {
-                                matched = false;
-                                break;
+                        if (response != null) {
+                            String url = (String) response.get("url");
+                            boolean matched = true;
+                            System.out.println(url);
+                            for (String str : keywords) {
+                                if (!url.contains(str)) {
+                                    matched = false;
+                                    break;
+                                }
                             }
-                        }
 
-                        if (matched) {
-                            return url;
+
+                            if (matched) {
+                                return url;
+                            }
                         }
                     }
                     catch (Exception e) {
